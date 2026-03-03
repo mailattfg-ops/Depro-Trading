@@ -12,7 +12,7 @@ export default function Hero() {
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/images/hero-bg-v2.png"
+                    src="/Images/hero-bg-v2.png"
                     alt="Premium Interior Background"
                     fill
                     className="object-cover object-center"
@@ -22,7 +22,7 @@ export default function Hero() {
             </div>
 
             {/* Main Content Area */}
-            <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 pt-12 pb-10 grow flex flex-col justify-end">
+            <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 pt-24 pb-20 grow flex flex-col justify-end">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
 
                     {/* Left Typography Side */}
@@ -102,7 +102,7 @@ export default function Hero() {
                                 {/* Main Highlight Image */}
                                 <div className="relative w-full h-[200px] md:h-[250px] rounded-[3rem] overflow-hidden shadow-inner group bg-slate-100">
                                     <Image
-                                        src="/images/hero-hardware.png"
+                                        src="/Images/hero-hardware.png"
                                         alt="Premium Hardware Solutions"
                                         fill
                                         className="object-cover transition-transform duration-1000 group-hover:scale-110"
@@ -159,7 +159,7 @@ export default function Hero() {
                                     Experience the anatomy of quality hardware
                                 </h3>
                             </div>
-                            <Link href="/contact#contact" className="group flex items-center gap-3 text-white font-bold uppercase tracking-widest text-sm border-b border-white/30 pb-2 hover:border-primary transition-all">
+                            <Link href="/about" className="group flex items-center gap-3 text-white font-bold uppercase tracking-widest text-sm border-b border-white/30 pb-2 hover:border-primary transition-all">
                                 LEARN MORE
                                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                             </Link>
