@@ -2,31 +2,9 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { ChevronDown, Plus, Minus } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
-
-const faqs = [
-    {
-        question: "What types of hardware do you specialize in?",
-        answer: "We specialize in a wide range of hardware, including carpet fittings, interior work supplies, aluminum fabrication components, door fixing hardware, and general construction hardware for both retail and wholesale.",
-    },
-    {
-        question: "Do you provide installation services?",
-        answer: "Yes, we have an expert team for door fixing and professional hardware implementation to ensure every product is installed to the highest standards.",
-    },
-    {
-        question: "Can I buy hardware in bulk for large projects?",
-        answer: "Absolutely! We cater to wholesale requirements and provide competitive pricing for contractors, builders, and large-scale commercial project developers.",
-    },
-    {
-        question: "Where is Depro Trading located?",
-        answer: "We are located at NK Complex, Chattiparamba, Kodur PO, Malappuram, Kerala. You are welcome to visit our showroom to explore our product range.",
-    },
-    {
-        question: "How can I get a custom quote for aluminum fabrication?",
-        answer: "You can reach out to us via our contact form or directly through WhatsApp. Our technical team will consult with you to provide a detailed and transparent quote based on your requirements.",
-    },
-];
+import { faqData } from "@/data/homeData";
 
 export default function FAQ() {
     const [activeIndex, setActiveIndex] = useState<number | null>(0);
@@ -36,14 +14,14 @@ export default function FAQ() {
             <div className="max-w-4xl mx-auto px-4">
                 <SectionHeader
                     align="center"
-                    title="Frequently Asked Questions"
-                    highlight="Questions"
-                    description="Find quick answers to common queries about our hardware products and services."
+                    title={faqData.title}
+                    highlight={faqData.highlight}
+                    description={faqData.description}
                     className="mb-16"
                 />
 
                 <div className="flex flex-col gap-4">
-                    {faqs.map((faq, index) => {
+                    {faqData.faqs.map((faq, index) => {
                         const isOpen = activeIndex === index;
                         return (
                             <motion.div
@@ -79,7 +57,7 @@ export default function FAQ() {
                                             exit={{ height: 0, opacity: 0 }}
                                             transition={{ duration: 0.3 }}
                                         >
-                                            <div className="p-6 pt-0 text-slate-600 leading-relaxed border-t border-primary/10">
+                                            <div className="p-6 pt-0 text-slate-600 leading-relaxed">
                                                 {faq.answer}
                                             </div>
                                         </motion.div>

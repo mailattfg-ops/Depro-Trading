@@ -15,7 +15,7 @@ const kodiaProducts = [
 
 export default function FeaturedBrand() {
     return (
-        <section className="py-12 bg-brand-muted relative overflow-hidden border-b border-slate-100">
+        <section className="py-12 bg-brand-muted relative overflow-hidden">
             {/* Background Accent */}
             <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50/50 -z-10" />
 

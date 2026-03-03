@@ -3,9 +3,11 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Target, Eye, Shield, Users, Award, Briefcase } from "lucide-react";
 import Link from "next/link";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { aboutHeroData, missionVisionData, coreValuesData } from "@/data/aboutData";
 
 export default function AboutPage() {
     return (
@@ -13,41 +15,30 @@ export default function AboutPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="pt-40 pb-12 bg-brand-muted relative overflow-hidden">
+            <section className="pt-24 md:pt-40 pb-12 bg-brand-muted relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 -skew-x-12 translate-x-1/4 -z-10" />
                 <div className="absolute top-40 left-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10" />
 
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="flex flex-col lg:flex-row items-center gap-20">
-                        <motion.div
-                            initial={{ opacity: 0, x: -30 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="flex-1"
-                        >
-                            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-8 border border-primary/10">
-                                <Users size={14} fill="currentColor" className="opacity-80" />
-                                Our Story
-                            </div>
-                            <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-8 leading-[1.1] tracking-tight">
-                                Building Trust with <br />
-                                <span className="text-primary">Excellence.</span>
-                            </h1>
-                            <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed mb-10 max-w-xl">
-                                Founded with a vision to revolutionize the hardware supply chain in Kerala, Depro Trading has grown into a premier destination for specialized interior and infrastructure hardware. We believe that quality materials are the foundation of every great space.
-                            </p>
+                        <div className="flex-1">
+                            <SectionHeader
+                                subtitle={aboutHeroData.subtitle}
+                                title={aboutHeroData.title}
+                                highlight={aboutHeroData.highlight}
+                                description={aboutHeroData.description}
+                                className="mb-10"
+                            />
 
-                            <div className="flex items-center gap-12 border-t border-slate-100 pt-10">
-                                <div className="flex flex-col gap-1">
-                                    <span className="text-5xl font-black text-slate-900 tracking-tighter">10+</span>
-                                    <span className="text-primary font-black uppercase tracking-widest text-[10px]">Years in Business</span>
-                                </div>
-                                <div className="flex flex-col gap-1">
-                                    <span className="text-5xl font-black text-slate-900 tracking-tighter">500+</span>
-                                    <span className="text-primary font-black uppercase tracking-widest text-[10px]">Hardware Lines</span>
-                                </div>
+                            <div className="flex items-center gap-12 pt-10">
+                                {aboutHeroData.stats.map((stat) => (
+                                    <div key={stat.label} className="flex flex-col gap-1">
+                                        <span className="text-5xl font-black text-slate-900 tracking-tighter">{stat.value}</span>
+                                        <span className="text-primary font-black uppercase tracking-widest text-[10px]">{stat.label}</span>
+                                    </div>
+                                ))}
                             </div>
-                        </motion.div>
+                        </div>
 
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
@@ -56,25 +47,13 @@ export default function AboutPage() {
                             className="flex-1 relative"
                         >
                             <div className="aspect-square lg:aspect-4/3 bg-slate-900 rounded-5xl overflow-hidden shadow-hard relative group">
-                                <div className="absolute inset-0 bg-linear-to-tr from-primary/40 to-transparent mix-blend-overlay z-10" />
-                                <div className="absolute inset-0 opacity-30 group-hover:opacity-40 transition-opacity duration-700 bg-[url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center" />
-
-                                <div className="absolute inset-0 flex items-center justify-center z-20">
-                                    <div className="text-center p-12 backdrop-blur-md bg-white/10 rounded-4xl border border-white/20 m-8">
-                                        <Briefcase size={80} className="text-white mx-auto mb-6 opacity-80" />
-                                        <p className="text-white text-[10px] font-black uppercase tracking-[0.4em]">Professional Infrastructure</p>
-                                    </div>
-                                </div>
+                                <Image
+                                    src="/Images/aboutus.webp"
+                                    alt="Professional Infrastructure"
+                                    fill
+                                    className="object-cover opacity-50 transition-opacity duration-700"
+                                />
                             </div>
-
-                            {/* Decorative float */}
-                            <motion.div
-                                animate={{ y: [0, -20, 0] }}
-                                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute -bottom-10 -left-10 bg-white p-8 rounded-4xl shadow-2xl border border-slate-100 hidden md:block"
-                            >
-                                <Target size={40} className="text-primary" />
-                            </motion.div>
                         </motion.div>
                     </div>
                 </div>
@@ -89,26 +68,25 @@ export default function AboutPage() {
                         <div className="flex-1 flex flex-col gap-10">
                             <div className="flex flex-col gap-6">
                                 <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
-                                    <Target size={32} strokeWidth={1.5} />
+                                    <missionVisionData.mission.icon size={32} strokeWidth={1.5} />
                                 </div>
                                 <h3 className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">Our <span className="text-primary">Mission</span></h3>
                                 <p className="text-slate-600 text-lg leading-relaxed font-medium">
-                                    To provide high-quality, durable hardware solutions that empower contractors and homeowners to build reliable and aesthetically beautiful spaces. We strive to be the most trusted name in hardware retail and wholesale supply.
+                                    {missionVisionData.mission.description}
                                 </p>
                             </div>
                         </div>
 
                         <div className="w-px h-64 bg-slate-100 hidden lg:block" />
-                        <div className="w-full h-px bg-slate-100 lg:hidden" />
 
                         <div className="flex-1 flex flex-col gap-10">
                             <div className="flex flex-col gap-6">
                                 <div className="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white">
-                                    <Eye size={32} strokeWidth={1.5} />
+                                    <missionVisionData.vision.icon size={32} strokeWidth={1.5} />
                                 </div>
                                 <h3 className="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tight">Our <span className="text-primary">Vision</span></h3>
                                 <p className="text-slate-600 text-lg leading-relaxed font-medium">
-                                    To expand our footprint across national markets while maintaining local excellence, sets new standards in material quality, customer service, and technical innovation within the interior hardware industry.
+                                    {missionVisionData.vision.description}
                                 </p>
                             </div>
                         </div>
@@ -118,7 +96,6 @@ export default function AboutPage() {
 
             {/* Values Section */}
             <section className="py-12 bg-brand-muted relative overflow-hidden">
-                <div className="absolute top-1/2 left-0 w-full h-px bg-slate-100 -z-10" />
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-20">
                         <motion.h2
@@ -135,11 +112,7 @@ export default function AboutPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-16 lg:gap-24">
-                        {[
-                            { icon: Shield, title: "Quality", desc: "We source only ISO-certified and field-tested hardware components." },
-                            { icon: Users, title: "Customer Centric", desc: "Your project success is our priority, with personalized technical support." },
-                            { icon: Award, title: "Reliability", desc: "Timely delivery and consistent supply for even the largest wholesale orders." },
-                        ].map((value, index) => (
+                        {coreValuesData.values.map((value, index) => (
                             <motion.div
                                 key={value.title}
                                 initial={{ opacity: 0, scale: 0.95 }}

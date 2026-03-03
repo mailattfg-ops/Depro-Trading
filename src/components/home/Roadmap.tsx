@@ -1,41 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, ClipboardCheck, Lightbulb, Wrench, Headset } from "lucide-react";
+import { roadmapData } from "@/data/homeData";
 import SectionHeader from "@/components/ui/SectionHeader";
-
-const steps = [
-    {
-        icon: Search,
-        title: "Consultation",
-        description: "Initial discussion to understand your project requirements and hardware needs.",
-        color: "bg-blue-500",
-    },
-    {
-        icon: ClipboardCheck,
-        title: "Diagnosis",
-        description: "Our experts evaluate the specific technical constraints and measurements.",
-        color: "bg-orange-500",
-    },
-    {
-        icon: Lightbulb,
-        title: "Solution Recommendation",
-        description: "We propose the best-fit hardware and materials for your specific use-case.",
-        color: "bg-purple-500",
-    },
-    {
-        icon: Wrench,
-        title: "Implementation",
-        description: "Precision fitting and implementation of the hardware solutions.",
-        color: "bg-green-500",
-    },
-    {
-        icon: Headset,
-        title: "Support",
-        description: "Ongoing assistance and maintenance to ensure long-term reliability.",
-        color: "bg-primary",
-    },
-];
 
 export default function Roadmap() {
     return (
@@ -43,26 +10,16 @@ export default function Roadmap() {
             <div className="max-w-7xl mx-auto px-4">
                 <SectionHeader
                     align="center"
-                    title="Our Process Roadmap"
-                    highlight="Process Roadmap"
-                    description="A systematic approach to delivering high-quality hardware solutions from concept to completion."
+                    title={roadmapData.title}
+                    highlight={roadmapData.highlight}
+                    description={roadmapData.description}
                     className="mb-20"
                 />
 
                 <div className="relative">
-                    {/* Animated Line (Desktop) */}
-                    <div className="hidden lg:block absolute top-[44px] left-[5%] right-[5%] h-1 bg-slate-100 -z-10 overflow-hidden">
-                        <motion.div
-                            initial={{ x: "-100%" }}
-                            whileInView={{ x: "0%" }}
-                            transition={{ duration: 2, ease: "easeInOut" }}
-                            viewport={{ once: true }}
-                            className="h-full w-full bg-linear-to-r from-primary/20 via-primary to-primary/20"
-                        />
-                    </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
-                        {steps.map((step, index) => (
+                        {roadmapData.steps.map((step, index) => (
                             <motion.div
                                 key={step.title}
                                 initial={{ opacity: 0, y: 50 }}

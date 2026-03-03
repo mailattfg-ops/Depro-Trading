@@ -5,14 +5,19 @@ import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import Contact from "@/components/home/Contact";
 import { motion } from "framer-motion";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { contactHeroData } from "@/data/contactData";
+import { footerLinks } from "@/data/navigation";
 
 export default function ContactPage() {
+    const { contactInfo } = footerLinks;
+
     return (
         <main className="min-h-screen">
             <Navbar />
 
             {/* Hero Section */}
-            <section className="pt-40 pb-12 bg-brand-muted relative overflow-hidden">
+            <section className="pt-24 md:pt-40 pb-12 bg-brand-muted relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/5 -skew-x-12 translate-x-1/4 -z-10" />
 
                 <div className="max-w-7xl mx-auto px-4">
@@ -22,16 +27,12 @@ export default function ContactPage() {
                             animate={{ opacity: 1, x: 0 }}
                             className="flex-1"
                         >
-                            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-8 border border-primary/10">
-                                Contact Us
-                            </div>
-                            <h1 className="text-5xl md:text-7xl font-black text-slate-900 mb-8 leading-[1.1] tracking-tight">
-                                Let's Build <br />
-                                <span className="text-primary">Together.</span>
-                            </h1>
-                            <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed max-w-xl">
-                                Have a project in mind or need technical consultation? Our experts are here to help you find the perfect hardware solutions.
-                            </p>
+                            <SectionHeader
+                                subtitle={contactHeroData.subtitle}
+                                title={contactHeroData.title}
+                                highlight={contactHeroData.highlight}
+                                description={contactHeroData.description}
+                            />
                         </motion.div>
 
                         <div className="flex-1 hidden lg:block">
@@ -41,14 +42,14 @@ export default function ContactPage() {
                                         <div className="font-black text-xs">HQ</div>
                                     </div>
                                     <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Main Office</p>
-                                    <p className="text-sm font-bold text-slate-900 leading-relaxed">NK Complex, Chattiparamba, Kodur PO, Malappuram - 676504</p>
+                                    <p className="text-sm font-bold text-slate-900 leading-relaxed">{contactInfo.address}</p>
                                 </div>
                                 <div className="mt-8 p-8 bg-slate-900 rounded-4xl shadow-hard flex flex-col gap-4 text-white">
                                     <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-white">
                                         <div className="font-black text-xs">24/7</div>
                                     </div>
                                     <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Support</p>
-                                    <p className="text-sm font-bold text-white leading-relaxed">deprotrading@gmail.com <br /> +91 97441 23456</p>
+                                    <p className="text-sm font-bold text-white leading-relaxed">{contactInfo.email} <br /> {contactInfo.phone}</p>
                                 </div>
                             </div>
                         </div>
@@ -61,15 +62,18 @@ export default function ContactPage() {
                 <Contact />
             </div>
 
-            {/* Map Section Placeholder */}
+            {/* Map Section */}
             <section className="py-12 bg-brand-muted">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="h-[400px] w-full bg-slate-100 relative rounded-5xl overflow-hidden shadow-soft border border-slate-200">
-                        <div className="absolute inset-0 flex items-center justify-center flex-col gap-4 text-slate-400">
-                            <span className="text-sm font-bold uppercase tracking-[0.2em]">Map View</span>
-                            <div className="w-16 h-1 bg-slate-200" />
-                            <p className="max-w-xs text-center text-xs">NK Complex, Chattiparamba, Kodur PO, Malappuram - 676504</p>
-                        </div>
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.5213714419683!2d76.08722427451985!3d10.999454255041384!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7cb6d51c3013b%3A0x7f7af8812432450c!2sDepro%20Trading!5e0!3m2!1sen!2sin!4v1772516700054!5m2!1sen!2sin"
+                            className="w-full h-full"
+                            style={{ border: 0 }}
+                            allowFullScreen
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                        ></iframe>
                     </div>
                 </div>
             </section>

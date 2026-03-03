@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Phone, Mail, MapPin, Send, MessageSquare, ArrowRight } from "lucide-react";
-import MagneticButton from "../ui/MagneticButton";
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -181,15 +180,13 @@ Requirement: ${formData.requirement}`;
                                 </div>
 
                                 <div className="pt-6">
-                                    <MagneticButton className="w-full">
-                                        <button
-                                            type="submit"
-                                            className="w-full bg-primary text-white p-7 rounded-3xl font-black text-lg flex items-center justify-center gap-4 shadow-2xl shadow-primary/40 hover:bg-black transition-all group"
-                                        >
-                                            Submit to WhatsApp
-                                            <ArrowRight className="group-hover:translate-x-2 transition-transform" size={24} />
-                                        </button>
-                                    </MagneticButton>
+                                    <button
+                                        type="submit"
+                                        className="w-full bg-primary text-white p-7 rounded-3xl font-black text-lg flex items-center justify-center gap-4 shadow-2xl shadow-primary/40 hover:bg-black transition-all group"
+                                    >
+                                        Submit to WhatsApp
+                                        <ArrowRight className="group-hover:translate-x-2 transition-transform" size={24} />
+                                    </button>
                                 </div>
 
                                 <p className="text-center text-slate-400 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2">

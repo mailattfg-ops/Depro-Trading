@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Play, Info } from "lucide-react";
 import Link from "next/link";
-import MagneticButton from "../ui/MagneticButton";
+import { heroData } from "@/data/homeData";
 
 export default function Hero() {
     return (
@@ -33,14 +33,17 @@ export default function Hero() {
                             transition={{ duration: 1, ease: "easeOut" }}
                             className="flex flex-col gap-6"
                         >
-                            <h1 className="text-5xl md:text-7xl xl:text-8xl font-serif text-white leading-[0.95] tracking-tight">
-                                PREMIUM <br />
-                                INTERIOR <br />
-                                SOLUTIONS <span className="text-3xl align-top">®</span>
+
+
+                            <h1 className="text-5xl md:text-7xl xl:text-8xl font-serif text-white leading-[0.9] tracking-tighter">
+                                {heroData.title.main.split(" ").filter(Boolean).map((word, i) => (
+                                    <span key={i} className="block">{word}</span>
+                                ))}
+                                <span className="text-white">{heroData.title.highlight}</span> <span className="text-3xl align-top">®</span>
                             </h1>
 
-                            <div className="flex items-center gap-4 text-white/80 font-medium tracking-wide italic">
-                                <span>Quality hardware that builds trust</span>
+                            <div className="flex items-center gap-4 text-white/80 font-medium tracking-wide italic max-w-xl">
+                                <span>{heroData.description}</span>
                             </div>
 
                             <motion.div
@@ -48,14 +51,12 @@ export default function Hero() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.5, duration: 0.8 }}
                             >
-                                <MagneticButton>
-                                    <Link
-                                        href="/catalog"
-                                        className="inline-flex items-center justify-center px-8 py-3.5 bg-primary text-white rounded-full font-bold text-base hover:bg-black transition-all hover:scale-105"
-                                    >
-                                        EXPLORE
-                                    </Link>
-                                </MagneticButton>
+                                <Link
+                                    href="/catalog"
+                                    className="inline-flex items-center justify-center px-8 py-3.5 bg-primary text-white rounded-full font-bold text-base hover:bg-black transition-all hover:scale-105"
+                                >
+                                    EXPLORE
+                                </Link>
                             </motion.div>
                         </motion.div>
                     </div>
@@ -73,9 +74,11 @@ export default function Hero() {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-6">
                                     <div className="pt-4 pl-4">
                                         <div className="flex gap-2 mb-4">
-                                            <span className="px-4 py-1.5 border border-slate-200 rounded-full text-xs font-bold text-slate-500 uppercase tracking-wider">Wholesale</span>
-                                            <span className="px-4 py-1.5 border border-slate-200 rounded-full text-xs font-bold text-slate-500 uppercase tracking-wider">Retail</span>
-                                            <span className="px-4 py-1.5 bg-primary text-white rounded-full text-xs font-bold uppercase tracking-wider">Elite</span>
+                                            {heroData.stats.map((stat) => (
+                                                <span key={stat.label} className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest ${stat.label === 'Expertise' ? 'bg-primary text-white' : 'border border-slate-100 text-slate-400'}`}>
+                                                    {stat.label === 'Expertise' ? 'Elite' : stat.value} {stat.label === 'Expertise' ? '' : stat.label}
+                                                </span>
+                                            ))}
                                         </div>
                                         <h2 className="text-3xl font-serif text-slate-900 mb-2 leading-tight">
                                             Precision & Performance
@@ -115,7 +118,7 @@ export default function Hero() {
             </div>
 
             {/* Bottom Info Bar */}
-            <div className="relative z-10 w-full bg-black/10 backdrop-blur-2xl border-t border-white/10">
+            <div className="relative z-10 w-full bg-black/10 backdrop-blur-2xl">
                 <div className="max-w-[1600px] mx-auto px-6 py-8">
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
 
@@ -124,16 +127,16 @@ export default function Hero() {
                             <div className="flex items-start gap-6">
                                 <div className="relative w-24 h-24 rounded-3xl overflow-hidden bg-primary flex-shrink-0 shadow-lg border-2 border-white/20">
                                     <Image
-                                        src="/images/material-3d.png"
+                                        src="/Images/material-3d.png"
                                         alt="Material Layers"
                                         fill
                                         className="object-cover"
                                     />
                                 </div>
                                 <div>
-                                    <h3 className="text-white text-xl font-serif mb-2">Verified quality only!</h3>
-                                    <p className="text-white/60 text-sm leading-relaxed">
-                                        Imported and locally sourced premium grade hardware.
+                                    <h3 className="text-white text-xl font-serif mb-2">{heroData.featuredText.title}</h3>
+                                    <p className="hidden xl:block text-white/60 text-sm leading-relaxed">
+                                        {heroData.featuredText.description}
                                     </p>
                                 </div>
                             </div>

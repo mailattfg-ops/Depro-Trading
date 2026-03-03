@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Star, Quote, Heart } from "lucide-react";
+import SectionHeader from "../ui/SectionHeader";
 
 export default function CreativeSection() {
     return (
@@ -9,25 +10,12 @@ export default function CreativeSection() {
 
             <div className="max-w-7xl mx-auto px-4 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="flex flex-col gap-8"
-                    >
-                        <div className="inline-flex items-center gap-2 bg-primary text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest w-fit shadow-lg shadow-primary/20">
-                            <Heart size={14} fill="currentColor" />
-                            Customer Experience
-                        </div>
-
-                        <h2 className="text-4xl md:text-6xl font-black text-slate-900 leading-[1.1]">
-                            Crafting Excellence in <br />
-                            <span className="text-primary">Every Project.</span>
-                        </h2>
-
-                        <p className="text-slate-600 text-lg md:text-xl leading-relaxed max-w-xl font-medium">
-                            We take pride in turning spaces into functional masterpieces. From retail hardware supply to wholesale interior solutions, your journey to better infrastructure starts here.
-                        </p>
+                    <div className="flex flex-col gap-10">
+                        <SectionHeader
+                            title="Crafting Excellence in Every Project."
+                            highlight="Every Project."
+                            description="We take pride in turning spaces into functional masterpieces. From retail hardware supply to wholesale interior solutions, your journey to better infrastructure starts here."
+                        />
 
                         <div className="grid grid-cols-2 gap-10 pt-4">
                             <div className="flex flex-col gap-1">
@@ -39,7 +27,7 @@ export default function CreativeSection() {
                                 <span className="text-primary font-black uppercase tracking-widest text-[10px]">Delivered</span>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -73,20 +61,6 @@ export default function CreativeSection() {
                                 </div>
                             </div>
                         </div>
-
-                        {/* Decorative float animation */}
-                        <motion.div
-                            animate={{ y: [0, -15, 0] }}
-                            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute -top-10 -right-10 hidden xl:block"
-                        >
-                            <div className="bg-white p-8 rounded-4xl border border-slate-100 shadow-2xl">
-                                <div className="flex flex-col gap-1 items-center">
-                                    <span className="text-primary font-black text-4xl">A+</span>
-                                    <span className="text-slate-900 text-[10px] font-black uppercase tracking-[0.2em]">Rating</span>
-                                </div>
-                            </div>
-                        </motion.div>
                     </motion.div>
                 </div>
             </div>

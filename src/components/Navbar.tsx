@@ -6,14 +6,8 @@ import Image from "next/image";
 import { Phone, MessageSquare, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { navItems } from "@/data/navigation";
 
-const navItems = [
-    { name: "Home", href: "/" },
-    { name: "Services", href: "/services" },
-    { name: "Catalog", href: "/catalog" },
-    { name: "About Us", href: "/about" },
-    { name: "Contact Us", href: "/contact" },
-];
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -103,7 +97,7 @@ export default function Navbar() {
                             ))}
                             <div className="flex flex-col gap-3 pt-2">
                                 <a
-                                    href="tel:+918086188200"
+                                    href={`tel:${navItems.find(i => i.name === "Contact Us")?.href || "#"}`}
                                     className="flex items-center justify-center gap-2 border border-slate-200 text-slate-700 px-5 py-3 rounded-xl text-sm font-semibold"
                                 >
                                     <Phone size={16} />

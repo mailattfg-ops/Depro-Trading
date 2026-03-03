@@ -10,6 +10,12 @@ import Roadmap from "@/components/home/Roadmap";
 import CreativeSection from "@/components/home/CreativeSection";
 import FAQ from "@/components/home/FAQ";
 import Contact from "@/components/home/Contact";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Depro Trading | Premium Interior & Infrastructure Hardware Malappuram",
+  description: "Experience excellence with Depro Trading, Malappuram's leading supplier of premium hardware solutions. Specialized in carpet hardware, interior works, and aluminum fabrication.",
+};
 
 export default function Home() {
   return (

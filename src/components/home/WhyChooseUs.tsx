@@ -1,39 +1,9 @@
 "use client";
 
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { Users, Cpu, Heart, ShieldCheck } from "lucide-react";
 import { useEffect, useRef } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
-
-const features = [
-    {
-        icon: Users,
-        title: "Expert Team",
-        description: "Our professionals bring years of technical expertise to every hardware project.",
-    },
-    {
-        icon: Cpu,
-        title: "Advanced Tech",
-        description: "We utilize modern equipment for superior durable hardware solutions.",
-    },
-    {
-        icon: Heart,
-        title: "Personalized Care",
-        description: "Tailored solutions that match your specific interior or commercial requirements.",
-    },
-    {
-        icon: ShieldCheck,
-        title: "Trusted Service",
-        description: "Built on reliability and trust, delivering high-quality hardware for over a decade.",
-    },
-];
-
-const stats = [
-    { label: "Years Experience", value: 12 },
-    { label: "Happy Clients", value: 1500 },
-    { label: "Products", value: 500 },
-    { label: "Projects", value: 2500 },
-];
+import { whyChooseUsData } from "@/data/homeData";
 
 function Counter({ value, label }: { value: number; label: string }) {
     const ref = useRef(null);
@@ -77,22 +47,22 @@ export default function WhyChooseUs() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center mb-20">
                     <div className="lg:col-span-5">
                         <SectionHeader
-                            subtitle="The Depro Advantage"
-                            title="Building a Legacy."
-                            highlight="Legacy."
-                            description="We combine quality craftsmanship with premium products to deliver hardware solutions that exceed expectations. Our commitment to excellence has made us a trusted partner for over a decade."
+                            subtitle={whyChooseUsData.subtitle}
+                            title={whyChooseUsData.title}
+                            highlight={whyChooseUsData.highlight}
+                            description={whyChooseUsData.description}
                         />
                     </div>
 
                     <div className="lg:col-span-7 grid grid-cols-2 gap-x-8 gap-y-12">
-                        {stats.map((stat) => (
+                        {whyChooseUsData.stats.map((stat) => (
                             <Counter key={stat.label} value={stat.value} label={stat.label} />
                         ))}
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {features.map((feature, index) => (
+                    {whyChooseUsData.features.map((feature, index) => (
                         <motion.div
                             key={feature.title}
                             initial={{ opacity: 0, y: 20 }}

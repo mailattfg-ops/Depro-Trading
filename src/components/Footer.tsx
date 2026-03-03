@@ -1,8 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, Phone, Mail, Facebook, Instagram, Twitter, MessageSquare } from "lucide-react";
+import { MapPin, Phone, Mail, Facebook, Instagram, Twitter } from "lucide-react";
+import { footerLinks } from "@/data/navigation";
 
 export default function Footer() {
+    const { quickLinks, services, contactInfo } = footerLinks;
+
     return (
         <footer className="bg-slate-50 border-t border-slate-200">
             <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
@@ -23,13 +26,13 @@ export default function Footer() {
                             Premium supplier of hardware for carpets, interiors, aluminum fabrication, and door fixing solutions. Quality you can trust.
                         </p>
                         <div className="flex items-center gap-4">
-                            <a href="#" className="p-2 bg-white rounded-full text-slate-600 hover:text-primary transition-colors shadow-sm">
+                            <a href={contactInfo.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-white rounded-full text-slate-600 hover:text-primary transition-colors shadow-sm">
                                 <Facebook size={18} />
                             </a>
-                            <a href="#" className="p-2 bg-white rounded-full text-slate-600 hover:text-primary transition-colors shadow-sm">
+                            <a href={contactInfo.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-white rounded-full text-slate-600 hover:text-primary transition-colors shadow-sm">
                                 <Instagram size={18} />
                             </a>
-                            <a href="#" className="p-2 bg-white rounded-full text-slate-600 hover:text-primary transition-colors shadow-sm">
+                            <a href={contactInfo.twitter} target="_blank" rel="noopener noreferrer" className="p-2 bg-white rounded-full text-slate-600 hover:text-primary transition-colors shadow-sm">
                                 <Twitter size={18} />
                             </a>
                         </div>
@@ -39,11 +42,13 @@ export default function Footer() {
                     <div className="flex flex-col gap-6">
                         <h4 className="font-bold text-slate-900">Quick Links</h4>
                         <ul className="flex flex-col gap-3">
-                            <li><Link href="/" className="text-sm text-slate-600 hover:text-primary transition-colors">Home</Link></li>
-                            <li><Link href="/services" className="text-sm text-slate-600 hover:text-primary transition-colors">Services</Link></li>
-                            <li><Link href="/catalog" className="text-sm text-slate-600 hover:text-primary transition-colors">Catalog</Link></li>
-                            <li><Link href="/about" className="text-sm text-slate-600 hover:text-primary transition-colors">About Us</Link></li>
-                            <li><Link href="/contact" className="text-sm text-slate-600 hover:text-primary transition-colors">Contact Us</Link></li>
+                            {quickLinks.map((link) => (
+                                <li key={link.name}>
+                                    <Link href={link.href} className="text-sm text-slate-600 hover:text-primary transition-colors">
+                                        {link.name}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
@@ -51,11 +56,13 @@ export default function Footer() {
                     <div className="flex flex-col gap-6">
                         <h4 className="font-bold text-slate-900">Our Services</h4>
                         <ul className="flex flex-col gap-3">
-                            <li className="text-sm text-slate-600">Carpet Hardware</li>
-                            <li className="text-sm text-slate-600">Interior Works</li>
-                            <li className="text-sm text-slate-600">Aluminum Fabrication</li>
-                            <li className="text-sm text-slate-600">Door Fixer Services</li>
-                            <li className="text-sm text-slate-600">Hardware Retail/Wholesale</li>
+                            {services.map((service) => (
+                                <li key={service.name}>
+                                    <Link href={service.href} className="text-sm text-slate-600 hover:text-primary transition-colors">
+                                        {service.name}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
@@ -66,17 +73,16 @@ export default function Footer() {
                             <div className="flex items-start gap-3">
                                 <MapPin className="text-primary shrink-0" size={18} />
                                 <span className="text-sm text-slate-600 leading-snug">
-                                    Room No: 286C, NK Complex, Chattiparamba,<br />
-                                    Kodur PO, Malappuram - 676504, Kerala
+                                    {contactInfo.address}
                                 </span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Phone className="text-primary shrink-0" size={18} />
-                                <span className="text-sm text-slate-600">+91 80861 88200</span>
+                                <span className="text-sm text-slate-600">{contactInfo.phone}</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Mail className="text-primary shrink-0" size={18} />
-                                <span className="text-sm text-slate-600">info@deprotrading.com</span>
+                                <span className="text-sm text-slate-600">{contactInfo.email}</span>
                             </div>
                         </div>
                     </div>
@@ -84,7 +90,7 @@ export default function Footer() {
 
                 <div className="mt-16 pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-xs text-slate-500 font-medium">
-                        © 2026 Depro Trading. All rights reserved. GSTIN: 32AARFD3192M1Z1
+                        © {new Date().getFullYear()} Depro Trading. All rights reserved. GSTIN: 32AARFD3192M1Z1
                     </p>
                     <p className="text-xs text-slate-400">
                         Designed for Excellence

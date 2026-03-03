@@ -1,48 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Hammer, Home, Construction, DoorClosed, Grid, ArrowUpRight, ChevronRight, Ruler, Wrench } from "lucide-react";
+import { ArrowUpRight, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
-
-const services = [
-    {
-        icon: Grid,
-        title: "Carpet Hardware",
-        description: "Specialized tools and fittings for professional carpet installation and maintenance.",
-        size: "large",
-        color: "bg-orange-50",
-    },
-    {
-        icon: Construction,
-        title: "Aluminum Fabrication",
-        description: "High-quality aluminum profiles and hardware.",
-        size: "small",
-        color: "bg-slate-50",
-    },
-    {
-        icon: Ruler,
-        title: "Interior Works",
-        description: "Bespoke hardware for modern transformations.",
-        size: "small",
-        color: "bg-slate-50",
-    },
-    {
-        icon: DoorClosed,
-        title: "Door Hardware",
-        description: "Premium locks, handles, and hinges for security and elegance.",
-        size: "medium",
-        color: "bg-white",
-    },
-    {
-        icon: Wrench,
-        title: "Wholesale Supply",
-        description: "Bulk hardware for large-scale projects and contractors.",
-        size: "medium",
-        color: "bg-white",
-    },
-];
+import { servicesPreviewData } from "@/data/homeData";
 
 export default function ServicesPreview() {
     return (
@@ -50,9 +12,9 @@ export default function ServicesPreview() {
             <div className="max-w-7xl mx-auto px-4">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
                     <SectionHeader
-                        subtitle="Our Expertise"
-                        title="Hardware Mastery."
-                        highlight="Mastery."
+                        subtitle={servicesPreviewData.subtitle}
+                        title={servicesPreviewData.title}
+                        highlight={servicesPreviewData.highlight}
                     />
 
                     <motion.div
@@ -73,111 +35,96 @@ export default function ServicesPreview() {
                 {/* Bento Grid layout */}
                 <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6 auto-rows-[180px]">
 
-                    {/* Featured/Large Item - Carpet Hardware */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        className="md:col-span-4 lg:col-span-3 row-span-2 bg-white rounded-5xl p-10 shadow-soft border border-slate-100 relative overflow-hidden group"
-                    >
-                        <div className="relative z-10 h-full flex flex-col justify-between">
-                            <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-8">
-                                <Grid size={32} />
-                            </div>
-                            <div>
-                                <h3 className="text-3xl font-black text-slate-900 mb-4">Carpet <br />Hardware</h3>
-                                <p className="text-slate-600 max-w-xs mb-8">Specialized tools and fittings for professional carpet installation and maintenance projects.</p>
-                                <Link href="/contact#contact" className="inline-flex items-center gap-2 text-primary font-bold group">
-                                    Learn More <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                                </Link>
-                            </div>
-                        </div>
-                        <div className="absolute top-10 right-10 w-48 h-48 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />
-                    </motion.div>
+                    {servicesPreviewData.services.map((service, index) => {
+                        const isLarge = service.size === "large";
+                        const isSmall = service.size === "small";
+                        const isMedium = service.size === "medium";
+                        const isDark = service.title === "Aluminum Fabrication"; // Matching original dark card logic
+                        const isPrimary = service.title === "Wholesale Supply"; // Matching original primary card logic
 
-                    {/* Small Item - Aluminum */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="md:col-span-2 lg:col-span-3 row-span-1 bg-slate-900 rounded-5xl p-8 shadow-2xl relative overflow-hidden group"
-                    >
-                        <div className="relative z-10 flex flex-col justify-between h-full">
-                            <div className="flex items-center justify-between">
-                                <div className="text-white font-bold text-xl leading-tight">Aluminum <br />Fabrication</div>
-                                <div className="p-2 bg-white/10 rounded-lg text-primary">
-                                    <Construction size={24} />
+                        return (
+                            <motion.div
+                                key={service.title}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className={cn(
+                                    "rounded-5xl p-8 shadow-soft border relative overflow-hidden group",
+                                    isLarge ? "md:col-span-4 lg:col-span-3 row-span-2 bg-white border-slate-100 p-10" :
+                                        isSmall ? "md:col-span-2 lg:col-span-3 row-span-1" :
+                                            "md:col-span-2 lg:col-span-3 row-span-2 p-10",
+                                    isDark ? "bg-slate-900 text-white shadow-2xl border-transparent" :
+                                        isPrimary ? "bg-primary text-white shadow-2xl shadow-primary/20 border-transparent" :
+                                            "bg-white border-slate-100"
+                                )}
+                            >
+                                <div className="relative z-10 h-full flex flex-col justify-between">
+                                    {isSmall ? (
+                                        <div className="flex items-center justify-between">
+                                            <div className={cn("font-bold text-xl leading-tight", isDark ? "text-white" : "text-slate-900")}>
+                                                {service.title.split(" ").map((word, i) => (
+                                                    <span key={i}>{word} <br /></span>
+                                                ))}
+                                            </div>
+                                            <div className={cn("p-2 rounded-lg", isDark ? "bg-white/10 text-primary" : "bg-primary/5 text-primary")}>
+                                                <service.icon size={24} />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className={cn(
+                                                "rounded-2xl flex items-center justify-center mb-6",
+                                                isLarge ? "w-16 h-16 bg-primary/10 text-primary" :
+                                                    isPrimary ? "w-14 h-14 bg-white/20 text-white" :
+                                                        "w-14 h-14 bg-primary/5 text-primary"
+                                            )}>
+                                                <service.icon size={isLarge ? 32 : 28} />
+                                            </div>
+                                            <div>
+                                                <h3 className={cn(
+                                                    "font-black mb-4",
+                                                    isLarge ? "text-3xl text-slate-900" : "text-2xl",
+                                                    isPrimary ? "text-white" : "text-slate-900"
+                                                )}>
+                                                    {service.title.split(" ").map((word, i) => (
+                                                        <span key={i}>{word} <br /></span>
+                                                    ))}
+                                                </h3>
+                                                <p className={cn(
+                                                    "text-sm mb-6",
+                                                    isLarge ? "text-slate-600 max-w-xs" :
+                                                        isPrimary ? "text-white/80" : "text-slate-500"
+                                                )}>
+                                                    {service.description}
+                                                </p>
+                                                {isLarge ? (
+                                                    <Link href="/contact#contact" className="inline-flex items-center gap-2 text-primary font-bold group">
+                                                        Learn More <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                                    </Link>
+                                                ) : isMedium && !isPrimary ? (
+                                                    <Link href="/contact#contact" className="p-3 bg-slate-50 rounded-xl block text-center text-slate-700 font-bold text-xs hover:bg-primary hover:text-white transition-all">
+                                                        Enquire Now
+                                                    </Link>
+                                                ) : isPrimary ? (
+                                                    <div className="flex items-center gap-2 text-white/60 text-[10px] font-black uppercase tracking-widest pt-4">
+                                                        <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                                                        Active Partnerships
+                                                    </div>
+                                                ) : null}
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
-                            </div>
-                        </div>
-                        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </motion.div>
-
-                    {/* Small Item - Interior */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="md:col-span-2 lg:col-span-3 row-span-1 bg-white rounded-5xl p-8 shadow-soft border border-slate-100 relative overflow-hidden group"
-                    >
-                        <div className="relative z-10 flex flex-col justify-between h-full">
-                            <div className="flex items-center justify-between">
-                                <div className="text-slate-900 font-bold text-xl leading-tight">Interior <br />Works</div>
-                                <div className="p-2 bg-primary/5 rounded-lg text-primary">
-                                    <Ruler size={24} />
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Medium Item - Door Hardware */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.3 }}
-                        className="md:col-span-2 lg:col-span-3 row-span-2 bg-white rounded-5xl p-10 shadow-soft border border-slate-100 relative overflow-hidden group"
-                    >
-                        <div className="relative z-10 h-full flex flex-col justify-between">
-                            <div className="w-14 h-14 bg-primary/5 rounded-xl flex items-center justify-center text-primary mb-6">
-                                <DoorClosed size={28} />
-                            </div>
-                            <div>
-                                <h3 className="text-2xl font-bold text-slate-900 mb-4">Door Hardware</h3>
-                                <p className="text-slate-500 text-sm mb-6">Premium locks, handles, and hinges for security and elegance in every room.</p>
-                                <Link href="/contact#contact" className="p-3 bg-slate-50 rounded-xl block text-center text-slate-700 font-bold text-xs hover:bg-primary hover:text-white transition-all">
-                                    Enquire Now
-                                </Link>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Medium Item - Wholesale */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.4 }}
-                        className="md:col-span-2 lg:col-span-3 row-span-2 bg-primary rounded-5xl p-10 shadow-2xl shadow-primary/20 relative overflow-hidden group"
-                    >
-                        <div className="relative z-10 h-full flex flex-col justify-between">
-                            <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center text-white mb-6">
-                                <Wrench size={28} />
-                            </div>
-                            <div>
-                                <h3 className="text-2xl font-bold text-white mb-4">Wholesale Supply</h3>
-                                <p className="text-white/80 text-sm mb-6">Bulk hardware supply services tailored for contractors and large-scale builders.</p>
-                                <div className="flex items-center gap-2 text-white/60 text-[10px] font-black uppercase tracking-widest border-t border-white/10 pt-4">
-                                    <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                                    Active Partnerships
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
+                                {isLarge && <div className="absolute top-10 right-10 w-48 h-48 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />}
+                                {isDark && <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity" />}
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </div>
         </section>
     );
 }
+
+import { cn } from "@/lib/utils";
