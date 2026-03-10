@@ -6,19 +6,19 @@ import SectionHeader from "@/components/ui/SectionHeader";
 
 export default function Roadmap() {
     return (
-        <section className="py-12 bg-brand-muted overflow-hidden">
+        <section className="py-6 lg:py-12 bg-brand-muted overflow-hidden">
             <div className="max-w-7xl mx-auto px-4">
                 <SectionHeader
                     align="center"
                     title={roadmapData.title}
                     highlight={roadmapData.highlight}
                     description={roadmapData.description}
-                    className="mb-20"
+                    className="mb-8 md:mb-12 lg:mb-16"
                 />
 
                 <div className="relative">
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-12 lg:gap-8">
                         {roadmapData.steps.map((step, index) => (
                             <motion.div
                                 key={step.title}
@@ -47,8 +47,8 @@ export default function Roadmap() {
                                 </div>
 
                                 <div className="flex flex-col gap-3 max-w-[200px]">
-                                    <h3 className="text-xl font-bold text-slate-900">{step.title}</h3>
-                                    <p className="text-slate-500 text-sm leading-relaxed">
+                                    <h3 className="text-lg md:text-xl font-bold text-slate-900">{step.title}</h3>
+                                    <p className="text-slate-500 text-xs md:text-sm leading-relaxed">
                                         {step.description}
                                     </p>
                                 </div>

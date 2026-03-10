@@ -10,14 +10,14 @@ export default function FAQ() {
     const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
     return (
-        <section className="py-12 bg-brand-muted">
+        <section className="py-6 lg:py-12 bg-brand-muted">
             <div className="max-w-4xl mx-auto px-4">
                 <SectionHeader
                     align="center"
                     title={faqData.title}
                     highlight={faqData.highlight}
                     description={faqData.description}
-                    className="mb-16"
+                    className="mb-8 md:mb-12 lg:mb-16"
                 />
 
                 <div className="flex flex-col gap-4">
@@ -37,7 +37,7 @@ export default function FAQ() {
                                     onClick={() => setActiveIndex(isOpen ? null : index)}
                                     className="w-full flex items-center justify-between p-6 text-left"
                                 >
-                                    <span className={`text-lg font-bold transition-colors ${isOpen ? "text-primary" : "text-slate-900"}`}>
+                                    <span className={`text-base md:text-lg font-bold transition-colors ${isOpen ? "text-primary" : "text-slate-900"}`}>
                                         {faq.question}
                                     </span>
                                     <div className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
@@ -57,7 +57,7 @@ export default function FAQ() {
                                             exit={{ height: 0, opacity: 0 }}
                                             transition={{ duration: 0.3 }}
                                         >
-                                            <div className="p-6 pt-0 text-slate-600 leading-relaxed">
+                                            <div className="p-6 pt-0 text-slate-600 text-sm md:text-base leading-relaxed">
                                                 {faq.answer}
                                             </div>
                                         </motion.div>

@@ -38,13 +38,13 @@ function Counter({ value, label }: { value: number; label: string }) {
 
 export default function WhyChooseUs() {
     return (
-        <section className="py-12 bg-brand-muted relative overflow-hidden">
+        <section className="py-6 g:py-12 bg-brand-muted relative overflow-hidden">
             {/* Background pattern */}
             <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none"
                 style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
             <div className="max-w-7xl mx-auto px-4 relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center mb-20">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-8 lg:gap-16 items-center mb-10 md:mb-14 lg:mb-20">
                     <div className="lg:col-span-5">
                         <SectionHeader
                             subtitle={whyChooseUsData.subtitle}
@@ -69,12 +69,12 @@ export default function WhyChooseUs() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
-                            className="bg-slate-50 p-8 rounded-4xl border border-slate-100 hover:bg-white hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 group"
+                            className="p-6 md:p-8 rounded-4xl border border-slate-100 bg-white shadow-2xl shadow-slate-200/50 transition-all duration-500 group"
                         >
-                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-primary mb-8 shadow-soft group-hover:bg-primary group-hover:text-white transition-colors duration-500">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-primary mb-4 md:mb-6 lg:mb-8 shadow-soft group-hover:bg-primary group-hover:text-white transition-colors duration-500">
                                 <feature.icon size={24} />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-4">{feature.title}</h3>
+                            <h3 className="text-xl font-bold text-slate-900 mb-2 md:mb-4">{feature.title}</h3>
                             <p className="text-slate-500 text-sm leading-relaxed">{feature.description}</p>
                         </motion.div>
                     ))}

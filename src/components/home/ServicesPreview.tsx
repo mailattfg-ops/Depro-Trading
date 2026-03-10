@@ -5,12 +5,13 @@ import { ArrowUpRight, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { servicesPreviewData } from "@/data/homeData";
+import { cn } from "@/lib/utils";
 
 export default function ServicesPreview() {
     return (
-        <section className="py-12 bg-brand-muted relative overflow-hidden">
+        <section className="py-6 lg:py-12 bg-brand-muted relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-4">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 lg:mb-16 gap-4 lg:gap-6">
                     <SectionHeader
                         subtitle={servicesPreviewData.subtitle}
                         title={servicesPreviewData.title}
@@ -33,7 +34,7 @@ export default function ServicesPreview() {
                 </div>
 
                 {/* Bento Grid layout */}
-                <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6 auto-rows-[180px]">
+                <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6 md:auto-rows-[180px]">
 
                     {servicesPreviewData.services.map((service, index) => {
                         const isLarge = service.size === "large";
@@ -50,10 +51,10 @@ export default function ServicesPreview() {
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 }}
                                 className={cn(
-                                    "rounded-5xl p-8 shadow-soft border relative overflow-hidden group",
-                                    isLarge ? "md:col-span-4 lg:col-span-3 row-span-2 bg-white border-slate-100 p-10" :
-                                        isSmall ? "md:col-span-2 lg:col-span-3 row-span-1" :
-                                            "md:col-span-2 lg:col-span-3 row-span-2 p-10",
+                                    "rounded-3xl md:rounded-5xl p-6 md:p-8 lg:p-10 shadow-soft border relative overflow-hidden group transition-all",
+                                    isLarge ? "md:col-span-4 lg:col-span-3 md:row-span-2 bg-white border-slate-100" :
+                                        isSmall ? "md:col-span-2 lg:col-span-3 md:row-span-1" :
+                                            "md:col-span-2 lg:col-span-3 md:row-span-2",
                                     isDark ? "bg-slate-900 text-white shadow-2xl border-transparent" :
                                         isPrimary ? "bg-primary text-white shadow-2xl shadow-primary/20 border-transparent" :
                                             "bg-white border-slate-100"
@@ -74,40 +75,40 @@ export default function ServicesPreview() {
                                     ) : (
                                         <>
                                             <div className={cn(
-                                                "rounded-2xl flex items-center justify-center mb-6",
-                                                isLarge ? "w-16 h-16 bg-primary/10 text-primary" :
-                                                    isPrimary ? "w-14 h-14 bg-white/20 text-white" :
-                                                        "w-14 h-14 bg-primary/5 text-primary"
+                                                "rounded-2xl flex items-center justify-center mb-4 md:mb-6",
+                                                isLarge ? "w-12 h-12 md:w-16 md:h-16 bg-primary/10 text-primary" :
+                                                    isPrimary ? "w-12 h-12 md:w-14 md:h-14 bg-white/20 text-white" :
+                                                        "w-12 h-12 md:w-14 md:h-14 bg-primary/5 text-primary"
                                             )}>
                                                 <service.icon size={isLarge ? 32 : 28} />
                                             </div>
                                             <div>
                                                 <h3 className={cn(
-                                                    "font-black mb-4",
-                                                    isLarge ? "text-3xl text-slate-900" : "text-2xl",
+                                                    "font-black mb-2 md:mb-4",
+                                                    isLarge ? "text-2xl md:text-3xl text-slate-900" : "text-xl md:text-2xl",
                                                     isPrimary ? "text-white" : "text-slate-900"
                                                 )}>
                                                     {service.title.split(" ").map((word, i) => (
-                                                        <span key={i}>{word} <br /></span>
+                                                        <span key={i}>{word} <br className="hidden md:block" /></span>
                                                     ))}
                                                 </h3>
                                                 <p className={cn(
-                                                    "text-sm mb-6",
+                                                    "text-xs md:text-sm mb-4 md:mb-6",
                                                     isLarge ? "text-slate-600 max-w-xs" :
                                                         isPrimary ? "text-white/80" : "text-slate-500"
                                                 )}>
                                                     {service.description}
                                                 </p>
                                                 {isLarge ? (
-                                                    <Link href="/contact#contact" className="inline-flex items-center gap-2 text-primary font-bold group">
+                                                    <Link href="/contact#contact" className="inline-flex items-center gap-2 text-primary font-bold group text-sm">
                                                         Learn More <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
                                                     </Link>
                                                 ) : isMedium && !isPrimary ? (
-                                                    <Link href="/contact#contact" className="p-3 bg-slate-50 rounded-xl block text-center text-slate-700 font-bold text-xs hover:bg-primary hover:text-white transition-all">
+                                                    <Link href="/contact#contact" className="py-3 px-4 bg-slate-50 rounded-xl block text-center text-slate-700 font-bold text-xs hover:bg-primary hover:text-white transition-all">
                                                         Enquire Now
                                                     </Link>
                                                 ) : isPrimary ? (
-                                                    <div className="flex items-center gap-2 text-white/60 text-[10px] font-black uppercase tracking-widest pt-4">
+                                                    <div className="flex items-center gap-2 text-white/60 text-[9px] md:text-[10px] font-black uppercase tracking-widest pt-2 md:pt-4">
                                                         <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
                                                         Active Partnerships
                                                     </div>
@@ -126,5 +127,3 @@ export default function ServicesPreview() {
         </section>
     );
 }
-
-import { cn } from "@/lib/utils";

@@ -15,12 +15,12 @@ const kodiaProducts = [
 
 export default function FeaturedBrand() {
     return (
-        <section className="py-12 bg-brand-muted relative overflow-hidden">
+        <section className="py-6 lg:py-12 bg-brand-muted relative overflow-hidden">
             {/* Background Accent */}
             <div className="absolute top-0 right-0 w-1/3 h-full bg-slate-50/50 -z-10" />
 
             <div className="max-w-7xl mx-auto px-6">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 lg:gap-8 items-center">
 
                     {/* Left Side: Brand Context */}
                     <motion.div
@@ -30,12 +30,12 @@ export default function FeaturedBrand() {
                         transition={{ duration: 0.8 }}
                         className="lg:col-span-5 flex flex-col items-start"
                     >
-                        <span className="text-sm font-bold tracking-[0.2em] text-primary uppercase mb-6 flex items-center gap-4">
-                            <span className="w-8 h-px bg-primary"></span>
+                        <span className="text-sm font-bold tracking-[0.2em] text-primary uppercase mb-2 md:mb-4 lg:mb-6 flex items-center gap-4">
+                            <span className="hidden md:inline-block w-8 h-px bg-primary"></span>
                             Featured Partner
                         </span>
 
-                        <div className="relative w-48 h-24 sm:w-64 sm:h-32 mb-8">
+                        <div className="relative w-48 h-24 sm:w-64 sm:h-32 mb-2 md:mb-4 lg:mb-8">
                             <Image
                                 src="/Images/kodiaLogot_11zon.jpeg"
                                 alt="Kodia Brand Logo"
@@ -44,11 +44,11 @@ export default function FeaturedBrand() {
                             />
                         </div>
 
-                        <h2 className="text-3xl md:text-4xl font-serif text-slate-900 mb-6 leading-tight">
+                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-serif text-slate-900 mb-2 md:mb-4 lg:mb-6 leading-tight">
                             Uncompromising Security Meets Elegant Design.
                         </h2>
 
-                        <p className="text-slate-600 text-lg leading-relaxed mb-10 max-w-md">
+                        <p className="text-slate-600 text-sm md:text-lg leading-relaxed mb-4 md:mb-6 lg:mb-10 max-w-md">
                             Depro Trading is proud to feature Kodia's exclusive line of premium locks. Engineered for ultimate security and meticulously crafted to complement high-end architectural aesthetics.
                         </p>
 

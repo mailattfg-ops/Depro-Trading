@@ -8,10 +8,10 @@ export default function Footer() {
 
     return (
         <footer className="bg-slate-50 border-t border-slate-200">
-            <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div className="max-w-7xl mx-auto px-4 py-6 lg:py-12">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 lg:gap-12">
                     {/* Brand & About */}
-                    <div className="flex flex-col gap-6">
+                    <div className="col-span-2 lg:col-span-1 flex flex-col gap-2 md:gap-4 lg:gap-6">
                         <Link href="/" className="flex items-center gap-3">
                             <div className="relative w-48 h-12 overflow-hidden">
                                 <Image
@@ -23,7 +23,7 @@ export default function Footer() {
                             </div>
                         </Link>
                         <p className="text-slate-600 text-sm leading-relaxed max-w-xs">
-                            Premium supplier of hardware for carpets, interiors, aluminum fabrication, and door fixing solutions. Quality you can trust.
+                            Premium supplier of hardware for interiors, aluminum fabrication, and door fixing solutions. Quality you can trust.
                         </p>
                         <div className="flex items-center gap-4">
                             <a href={contactInfo.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-white rounded-full text-slate-600 hover:text-primary transition-colors shadow-sm">
@@ -39,12 +39,13 @@ export default function Footer() {
                     </div>
 
                     {/* Quick Links */}
-                    <div className="flex flex-col gap-6">
-                        <h4 className="font-bold text-slate-900">Quick Links</h4>
+                    <div className="col-span-1 flex flex-col gap-6">
+                        <h4 className="font-bold text-slate-900 border-b-2 border-primary/20 pb-2 w-fit">Quick Links</h4>
                         <ul className="flex flex-col gap-3">
                             {quickLinks.map((link) => (
                                 <li key={link.name}>
-                                    <Link href={link.href} className="text-sm text-slate-600 hover:text-primary transition-colors">
+                                    <Link href={link.href} className="text-sm text-slate-600 hover:text-primary transition-colors flex items-center gap-2 group">
+                                        <span className="w-1 h-1 bg-primary/20 rounded-full group-hover:w-2 group-hover:bg-primary transition-all" />
                                         {link.name}
                                     </Link>
                                 </li>
@@ -53,12 +54,13 @@ export default function Footer() {
                     </div>
 
                     {/* Services */}
-                    <div className="flex flex-col gap-6">
-                        <h4 className="font-bold text-slate-900">Our Services</h4>
+                    <div className="col-span-1 flex flex-col gap-6">
+                        <h4 className="font-bold text-slate-900 border-b-2 border-primary/20 pb-2 w-fit">Our Services</h4>
                         <ul className="flex flex-col gap-3">
                             {services.map((service) => (
                                 <li key={service.name}>
-                                    <Link href={service.href} className="text-sm text-slate-600 hover:text-primary transition-colors">
+                                    <Link href={service.href} className="text-sm text-slate-600 hover:text-primary transition-colors flex items-center gap-2 group">
+                                        <span className="w-1 h-1 bg-primary/20 rounded-full group-hover:w-2 group-hover:bg-primary transition-all" />
                                         {service.name}
                                     </Link>
                                 </li>
@@ -67,7 +69,7 @@ export default function Footer() {
                     </div>
 
                     {/* Contact Details */}
-                    <div className="flex flex-col gap-6">
+                    <div className="col-span-2 lg:col-span-1 flex flex-col gap-6">
                         <h4 className="font-bold text-slate-900">Contact Info</h4>
                         <div className="flex flex-col gap-4">
                             <div className="flex items-start gap-3">
@@ -88,12 +90,12 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <div className="mt-16 pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-xs text-slate-500 font-medium">
-                        © {new Date().getFullYear()} Depro Trading. All rights reserved. GSTIN: 32AARFD3192M1Z1
+                <div className="mt-4 md:mt-8 lg:mt-16 pt-2 md:pt-4 lg:pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-xs text-slate-500 font-medium text-center md:text-left">
+                        © {new Date().getFullYear()} Depro Trading. All rights reserved.
                     </p>
-                    <p className="text-xs text-slate-400">
-                        Designed for Excellence
+                    <p className="text-xs text-slate-400 font-medium">
+                        Designed & Developed by <Link href="https://thinkforgeglobal.com/" target="_blank" className="text-primary hover:underline font-bold transition-all">Think Forge Global</Link>
                     </p>
                 </div>
             </div>

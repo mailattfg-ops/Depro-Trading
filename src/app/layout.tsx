@@ -15,10 +15,10 @@ const playfair = Playfair_Display({
 
 const siteConfig = {
   name: "Depro Trading",
-  description: "Premier destination for specialized interior and infrastructure hardware in Kerala. Experts in Carpet Hardware, Interior Works, Aluminum Fabrication, and Wholesale Supply.",
+  description: "Premier destination for specialized interior and infrastructure hardware in Kerala. Experts in Interior Works, Aluminum Fabrication, and Wholesale Supply.",
   url: "https://deprotrading.com",
   ogImage: "https://deprotrading.com/Images/og-image.jpg",
-  keywords: ["Hardware Kerala", "Interior Hardware Malappuram", "Carpet Hardware India", "Aluminum Fabrication Hardware", "Depro Trading", "Hardware Wholesale Kerala"],
+  keywords: ["Hardware Kerala", "Interior Hardware Malappuram", "Aluminum Fabrication Hardware", "Depro Trading", "Hardware Wholesale Kerala"],
 };
 
 export const metadata: Metadata = {
@@ -75,11 +75,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning={true}>
       <head>
         <JsonLd />
       </head>
       <body
+        suppressHydrationWarning={true}
         className={`${outfit.variable} ${playfair.variable} font-sans antialiased text-slate-900 bg-white`}
       >
         {children}

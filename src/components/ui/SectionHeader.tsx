@@ -53,7 +53,7 @@ export default function SectionHeader({
                 initial={{ opacity: 0, x: isCentered ? 0 : -20, y: isCentered ? 20 : 0 }}
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
                 viewport={{ once: true }}
-                className="text-4xl md:text-6xl font-black text-slate-900 mb-2 leading-tight"
+                className="text-3xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-2 leading-tight"
             >
                 {renderTitle()}
             </motion.h2>
@@ -64,7 +64,7 @@ export default function SectionHeader({
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1 }}
-                    className={`text-slate-600 text-lg leading-relaxed ${isCentered ? "max-w-3xl" : "max-w-2xl"}`}
+                    className={`text-slate-600 text-sm md:text-lg leading-relaxed ${isCentered ? "max-w-3xl" : "max-w-2xl"}`}
                 >
                     {description}
                 </motion.p>

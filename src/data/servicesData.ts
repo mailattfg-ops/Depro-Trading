@@ -22,13 +22,7 @@ export const featuredPackageData = {
 };
 
 export const allServices = [
-    {
-        icon: Grid,
-        title: "Carpet Hardware",
-        description: "Our carpet hardware range includes everything from specialized kickers and cutters to high-grade adhesives and transition strips. We ensure your flooring is laid with precision.",
-        details: ["Carpet Kickers", "Seam Tape", "Tack Strips", "Carpet Shears", "Trimmers"],
-        id: "carpet-hardware",
-    },
+
     {
         icon: Home,
         title: "Interior Works",

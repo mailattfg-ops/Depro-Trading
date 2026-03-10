@@ -15,11 +15,10 @@ export const footerLinks = {
         { name: "Contact Us", href: "/contact" },
     ],
     services: [
-        { name: "Carpet Hardware", href: "/services" },
-        { name: "Interior Works", href: "/services" },
         { name: "Aluminum Fabrication", href: "/services" },
-        { name: "Door Fixer Services", href: "/services" },
-        { name: "Hardware Retail/Wholesale", href: "/services" },
+        { name: "Interior Works", href: "/services" },
+        { name: "Door Hardware", href: "/services" },
+        { name: "Wholesale Supply", href: "/services" },
     ],
     contactInfo: {
         address: "Room No: 286C, NK Complex, Chattiparamba, Kodur PO, Malappuram - 676504, Kerala",

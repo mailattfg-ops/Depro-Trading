@@ -58,12 +58,7 @@ export const servicesPreviewData = {
     title: "Hardware Mastery.",
     highlight: "Mastery.",
     services: [
-        {
-            icon: Grid,
-            title: "Carpet Hardware",
-            description: "Specialized tools and fittings for professional carpet installation and maintenance.",
-            size: "large",
-        },
+
         {
             icon: Construction,
             title: "Aluminum Fabrication",
@@ -131,7 +126,7 @@ export const faqData = {
     faqs: [
         {
             question: "What types of hardware do you specialize in?",
-            answer: "We specialize in a wide range of hardware, including carpet fittings, interior work supplies, aluminum fabrication components, door fixing hardware, and general construction hardware for both retail and wholesale.",
+            answer: "We specialize in a wide range of hardware, including interior work supplies, aluminum fabrication components, door fixing hardware, and general construction hardware for both retail and wholesale.",
         },
         {
             question: "Do you provide installation services?",

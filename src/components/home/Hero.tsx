@@ -35,14 +35,14 @@ export default function Hero() {
                         >
 
 
-                            <h1 className="text-5xl md:text-7xl xl:text-8xl font-serif text-white leading-[0.9] tracking-tighter">
+                            <h1 className="text-4xl md:text-7xl xl:text-8xl font-serif text-white leading-[0.9] tracking-tighter">
                                 {heroData.title.main.split(" ").filter(Boolean).map((word, i) => (
                                     <span key={i} className="block">{word}</span>
                                 ))}
-                                <span className="text-white">{heroData.title.highlight}</span> <span className="text-3xl align-top">®</span>
+                                <span className="text-white">{heroData.title.highlight}</span> <span className="text-xl md:text-3xl align-top">®</span>
                             </h1>
 
-                            <div className="flex items-center gap-4 text-white/80 font-medium tracking-wide italic max-w-xl">
+                            <div className="flex items-center gap-4 text-white/80 font-medium tracking-wide italic max-w-xl text-xs md:text-base">
                                 <span>{heroData.description}</span>
                             </div>
 
@@ -119,13 +119,13 @@ export default function Hero() {
 
             {/* Bottom Info Bar */}
             <div className="relative z-10 w-full bg-black/10 backdrop-blur-2xl">
-                <div className="max-w-[1600px] mx-auto px-6 py-8">
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+                <div className="max-w-[1600px] mx-auto px-4 py-4 md:py-6 md:px-6 lg:py-8">
+                    <div className="grid grid-cols-1 md:grid-cols-12 md:gap-4 lg:gap-12 items-center">
 
                         {/* Material Info */}
                         <div className="md:col-span-4 lg:col-span-3">
-                            <div className="flex items-start gap-6">
-                                <div className="relative w-24 h-24 rounded-3xl overflow-hidden bg-primary flex-shrink-0 shadow-lg border-2 border-white/20">
+                            <div className="flex items-center md:items-start gap-4 lg:gap-6">
+                                <div className="relative w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl md:rounded-3xl overflow-hidden bg-primary flex-shrink-0 shadow-lg border-2 border-white/20">
                                     <Image
                                         src="/Images/material-3d.png"
                                         alt="Material Layers"
@@ -133,9 +133,9 @@ export default function Hero() {
                                         className="object-cover"
                                     />
                                 </div>
-                                <div>
-                                    <h3 className="text-white text-xl font-serif mb-2">{heroData.featuredText.title}</h3>
-                                    <p className="hidden xl:block text-white/60 text-sm leading-relaxed">
+                                <div className="flex flex-col justify-center h-full">
+                                    <h3 className="text-white text-sm md:text-base lg:text-xl font-serif mb-0.5 md:mb-1 lg:mb-2 leading-tight">{heroData.featuredText.title}</h3>
+                                    <p className="text-white/60 text-[10px] lg:text-sm leading-relaxed max-w-[150px] lg:max-w-none line-clamp-2 md:line-clamp-none">
                                         {heroData.featuredText.description}
                                     </p>
                                 </div>
@@ -143,28 +143,30 @@ export default function Hero() {
                         </div>
 
                         {/* Customer Stats */}
-                        <div className="md:col-span-3 lg:col-span-3 flex flex-col items-center md:items-start">
-                            <div className="flex -space-x-3 mb-4">
+                        <div className="hidden md:flex md:col-span-3 lg:col-span-3 flex-row md:flex-col items-center md:items-start gap-2 lg:gap-4 md:pl-4 lg:pl-0 border-l border-white/10 lg:border-none">
+                            <div className="flex -space-x-2 lg:-space-x-3 lg:mb-4">
                                 {[1, 2].map((i) => (
-                                    <div key={i} className="w-10 h-10 rounded-full border-2 border-primary overflow-hidden bg-slate-200">
-                                        <Image src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Customer" width={40} height={40} />
+                                    <div key={i} className="w-8 h-8 lg:w-10 lg:h-10 rounded-full border-2 border-primary overflow-hidden bg-slate-200 shadow-lg relative">
+                                        <Image src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Customer" fill className="object-cover" />
                                     </div>
                                 ))}
                             </div>
-                            <span className="text-4xl font-serif text-white mb-1">1k+</span>
-                            <span className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-bold">Project Partners</span>
+                            <div className="flex flex-col">
+                                <span className="text-2xl lg:text-4xl font-serif text-white leading-none mb-0.5 md:mb-1">1k+</span>
+                                <span className="text-white/40 text-[7px] lg:text-[10px] uppercase tracking-[0.2em] lg:tracking-[0.3em] font-black">Project Partners</span>
+                            </div>
                         </div>
 
                         {/* Corporate CTA */}
-                        <div className="md:col-span-5 lg:col-span-6 flex flex-col md:flex-row md:items-center justify-between gap-8 md:pl-12 border-l border-white/10">
+                        <div className="md:col-span-5 lg:col-span-6 flex flex-col md:flex-row md:items-center justify-between gap-3 lg:gap-8 md:pl-4 lg:pl-12 md:border-l border-white/10">
                             <div>
-                                <h3 className="text-2xl md:text-3xl text-white font-serif max-w-sm leading-tight uppercase">
+                                <h3 className="text-sm md:text-base lg:text-3xl text-white font-serif max-w-[200px] lg:max-w-sm leading-tight uppercase">
                                     Experience the anatomy of quality hardware
                                 </h3>
                             </div>
-                            <Link href="/about" className="group flex items-center gap-3 text-white font-bold uppercase tracking-widest text-sm border-b border-white/30 pb-2 hover:border-primary transition-all">
+                            <Link href="/about" className="group flex items-center gap-2 lg:gap-3 text-white font-black uppercase tracking-widest text-[9px] lg:text-sm border-b border-white/30 pb-1 lg:pb-2 hover:border-primary transition-all w-fit whitespace-nowrap">
                                 LEARN MORE
-                                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                <ArrowRight size={14} className="lg:w-4 lg:h-4 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </div>
 

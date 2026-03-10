@@ -14,7 +14,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Depro Trading | Premium Interior & Infrastructure Hardware Malappuram",
-  description: "Experience excellence with Depro Trading, Malappuram's leading supplier of premium hardware solutions. Specialized in carpet hardware, interior works, and aluminum fabrication.",
+  description: "Experience excellence with Depro Trading, Malappuram's leading supplier of premium hardware solutions. Specialized in interior works, aluminum fabrication, and wholesale supply.",
 };
 
 export default function Home() {

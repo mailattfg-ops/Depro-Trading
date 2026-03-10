@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Our Services",
-    description: "Explore our range of specialized hardware solutions, from carpet hardware and interior works to aluminum fabrication and wholesale supply.",
+    description: "Explore our range of specialized hardware solutions, from interior works and aluminum fabrication to wholesale supply.",
 };
 
 export default function ServicesLayout({

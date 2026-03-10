@@ -24,14 +24,14 @@ export default function Navbar() {
     return (
         <nav
             className={cn(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-4 py-3",
+                "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 px-4 py-3",
                 isScrolled ? "bg-white/90 backdrop-blur-md shadow-soft py-2" : "bg-transparent"
             )}
         >
             <div className="max-w-7xl mx-auto flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 group">
-                    <div className="relative w-40 h-10 md:w-56 md:h-14 overflow-hidden">
+                    <div className="relative w-40 h-10 md:w-48 md:h-12 lg:w-56 lg:h-14 overflow-hidden">
                         <Image
                             src="/Images/logo.svg"
                             alt="Depro Trading Logo"
@@ -43,12 +43,12 @@ export default function Navbar() {
                 </Link>
 
                 {/* Desktop Menu */}
-                <div className="hidden md:flex items-center gap-8">
+                <div className="hidden md:flex items-center gap-4 lg:gap-8">
                     {navItems.map((item) => (
                         <Link
                             key={item.name}
                             href={item.href}
-                            className="text-sm font-medium text-black hover:text-primary transition-colors"
+                            className="text-[13px] lg:text-sm font-medium text-black hover:text-primary transition-colors"
                         >
                             {item.name}
                         </Link>
@@ -59,7 +59,7 @@ export default function Navbar() {
                 <div className="hidden md:flex items-center gap-3">
                     <Link
                         href="/contact#contact"
-                        className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all active:scale-95"
+                        className="flex items-center gap-2 bg-primary text-white px-4 lg:px-5 py-2 md:py-2.5 rounded-full text-[13px] lg:text-sm font-semibold shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all active:scale-95 whitespace-nowrap"
                     >
                         <MessageSquare size={16} />
                         <span>Consult Now</span>

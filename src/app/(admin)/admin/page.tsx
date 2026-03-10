@@ -1,0 +1,591 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import {
+    LayoutDashboard,
+    Boxes,
+    LogOut,
+    Package,
+    ChevronRight,
+    Loader2,
+    Menu,
+    X
+} from "lucide-react";
+
+import { supabase } from "@/lib/supabase";
+import { uploadToCloudinary } from "@/lib/cloudinary";
+
+// Modular Components
+import DashboardOverview from "@/components/admin/DashboardOverview";
+import InventoryView from "@/components/admin/InventoryView";
+import ProductForm from "@/components/admin/ProductForm";
+import CategoryModal from "@/components/admin/CategoryModal";
+
+// Types
+import { Category, Product, Stats, FormState, FormErrors } from "@/types";
+import { deleteCategoryAction } from "@/app/actions/admin";
+import { isAppError } from "@/types/error";
+
+export default function AdminPage() {
+    const router = useRouter();
+    const [activeTab, setActiveTab] = useState<"home" | "inventory">("home");
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [inventoryTab, setInventoryTab] = useState<"list" | "add">("list");
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [inventorySearch, setInventorySearch] = useState("");
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [newCategoryName, setNewCategoryName] = useState("");
+    const [isAddingCategory, setIsAddingCategory] = useState(false);
+    const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+    const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
+    const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+    const [modalError, setModalError] = useState<string | null>(null);
+    const [formErrors, setFormErrors] = useState<FormErrors>({});
+    const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(null);
+    const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(null);
+    const [stats, setStats] = useState<Stats>({
+        totalProducts: 0,
+        totalClicks: 0,
+        topProduct: "N/A",
+        topProductsList: [],
+        recentProductsList: []
+    });
+
+    // Form State
+    const [formData, setFormData] = useState<FormState>({
+        name: "",
+        brand: "",
+        mrp_price: "",
+        discount_price: "",
+        size: "",
+        description: "",
+        category_id: "",
+    });
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
+    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+
+    useEffect(() => {
+        // Data fetching is now guaranteed by the (admin) layout protection
+        fetchInitialData();
+    }, []);
+
+    const fetchInitialData = async () => {
+        setIsLoading(true);
+        await Promise.all([fetchCategories(), fetchStats(), fetchProducts()]);
+        setIsLoading(false);
+    };
+
+    const fetchProducts = async () => {
+        try {
+            const { data, error } = await supabase
+                .from("products")
+                .select(`
+                    *,
+                    category:categories(name)
+                `)
+                .order("created_at", { ascending: false });
+
+            if (error) throw error;
+            setProducts(data as Product[] || []);
+        } catch (err) {
+            console.error("Error fetching products:", err);
+        }
+    };
+
+    const fetchStats = async () => {
+        try {
+            const { data: products, error, count } = await supabase
+                .from("products")
+                .select("name, clicks", { count: "exact" });
+
+            if (error) throw error;
+
+            const totalProductsCount = count || 0;
+            const totalClicks = products?.reduce((acc, p) => acc + (p.clicks || 0), 0) || 0;
+            const sortedProducts = products ? [...products].sort((a, b) => (b.clicks || 0) - (a.clicks || 0)) : [];
+            const topProduct = sortedProducts[0]?.name || "N/A";
+            const topProductsList = sortedProducts.slice(0, 5) as Pick<Product, 'name' | 'clicks'>[];
+
+            const { data: recent } = await supabase
+                .from("products")
+                .select("name, clicks, created_at, mrp_price")
+                .order("created_at", { ascending: false })
+                .limit(5);
+
+            setStats({
+                totalProducts: totalProductsCount,
+                totalClicks,
+                topProduct,
+                topProductsList,
+                recentProductsList: (recent || []) as Partial<Product>[]
+            });
+        } catch (err: any) {
+            console.error("Detailed Error fetching stats:", err);
+            setStats({
+                totalProducts: 0,
+                totalClicks: 0,
+                topProduct: "Error loading",
+                topProductsList: [],
+                recentProductsList: []
+            });
+        }
+    };
+
+    const handleCreateCategory = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newCategoryName.trim()) return;
+        setIsAddingCategory(true);
+        try {
+            const { error } = await supabase.from("categories").insert([{ name: newCategoryName.trim() }]);
+            if (error) throw error;
+            setNewCategoryName("");
+            setStatus({ type: "success", message: "Category added successfully" });
+            setIsCategoryModalOpen(false); // Close modal on success
+            fetchCategories();
+        } catch (err: unknown) {
+            setStatus({ type: "error", message: isAppError(err) ? err.message : "Failed to create category" });
+        } finally {
+            setIsAddingCategory(false);
+        }
+    };
+
+    const handleDeleteCategory = async (id: string) => {
+        setModalError(null);
+        setDeletingCategoryId(id);
+        try {
+            // Using a Server Action bypasses client-side RLS restrictions securely
+            const result = await deleteCategoryAction(id);
+
+            if (!result.success) {
+                throw new Error(result.error);
+            }
+
+            setStatus({ type: "success", message: "Category removed" });
+            setConfirmingDeleteId(null);
+            fetchCategories();
+        } catch (err: unknown) {
+            setModalError(isAppError(err) ? err.message : "Failed to delete category");
+        } finally {
+            setDeletingCategoryId(null);
+        }
+    };
+
+    const fetchCategories = async () => {
+        try {
+            const { data, error } = await supabase
+                .from("categories")
+                .select("*")
+                .order("name", { ascending: true });
+
+            if (error) throw error;
+            setCategories((data as Category[]) || []);
+            if (data && data.length > 0) {
+                setFormData(prev => ({ ...prev, category_id: data[0].id }));
+            }
+        } catch (err) {
+            console.error("Error fetching categories:", err);
+        }
+    };
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        router.push("/admin/login");
+        router.refresh();
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        if (files.length > 0) {
+            const newFiles = [...imageFiles, ...files].slice(0, 3); // Limit to 3 images
+            setImageFiles(newFiles);
+
+            const newPreviews: string[] = [];
+            let loaded = 0;
+            newFiles.forEach((file) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    newPreviews.push(reader.result as string);
+                    loaded++;
+                    if (loaded === newFiles.length) {
+                        setImagePreviews(newPreviews);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    };
+
+    const removeImage = (index: number) => {
+        const newFiles = imageFiles.filter((_, i) => i !== index);
+        const newPreviews = imagePreviews.filter((_, i) => i !== index);
+        setImageFiles(newFiles);
+        setImagePreviews(newPreviews);
+    };
+
+    const handleEdit = (product: Product) => {
+        setEditingProduct(product);
+        setFormData({
+            name: product.name,
+            brand: product.brand || "",
+            mrp_price: product.mrp_price.toString(),
+            discount_price: product.discount_price.toString(),
+            size: product.size || "",
+            description: product.description || "",
+            category_id: product.category_id,
+        });
+        setImagePreviews(product.image_urls || [product.image_url]);
+        setImageFiles([]); // Reset files, we use previews to show existing
+        setInventoryTab("add"); // Switch to form tab
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const resetForm = () => {
+        setEditingProduct(null);
+        setFormData({
+            name: "",
+            brand: "",
+            mrp_price: "",
+            discount_price: "",
+            size: "",
+            description: "",
+            category_id: categories[0]?.id || "",
+        });
+        setImageFiles([]);
+        setImagePreviews([]);
+        setStatus(null);
+        setFormErrors({});
+    };
+
+    const validateForm = (): boolean => {
+        const errors: FormErrors = {};
+
+        if (!formData.name.trim()) errors.name = "Commercial name is required";
+        else if (formData.name.trim().length < 3) errors.name = "Name must be at least 3 characters";
+
+        if (!formData.category_id) errors.category_id = "Please select a catalog category";
+
+        const mrp = parseFloat(formData.mrp_price);
+        if (isNaN(mrp) || mrp <= 0) errors.mrp_price = "Valid MRP is required";
+
+        const discount = parseFloat(formData.discount_price);
+        if (!isNaN(discount) && !isNaN(mrp) && discount > mrp) {
+            errors.discount_price = "Offer price cannot exceed MRP";
+        }
+
+        if (!formData.description.trim()) errors.description = "Product narrative is required";
+        else if (formData.description.trim().length < 20) errors.description = "Description should be at least 20 characters for catalog quality";
+
+        if (imagePreviews.length === 0 && imageFiles.length === 0) {
+            errors.images = "At least one Image is required";
+        }
+
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+            setStatus({ type: "error", message: "Please resolve the highlighted errors before publishing." });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        setIsSubmitting(true);
+        setStatus(null);
+
+        try {
+            let imageUrls = editingProduct?.image_urls || (editingProduct?.image_url ? [editingProduct.image_url] : []);
+
+            if (imageFiles.length > 0) {
+                const uploadedUrls = await Promise.all(imageFiles.map(file => uploadToCloudinary(file)));
+                // If editing, we might want to append or replace. For simplicity, let's replace for now if new files are added.
+                imageUrls = uploadedUrls;
+            } else if (!editingProduct || imageUrls.length === 0) {
+                throw new Error("Please select at least one image.");
+            }
+
+            const productData = {
+                name: formData.name,
+                brand: formData.brand,
+                mrp_price: parseFloat(formData.mrp_price) || 0,
+                discount_price: parseFloat(formData.discount_price) || 0,
+                size: formData.size,
+                description: formData.description,
+                category_id: formData.category_id,
+                image_urls: imageUrls,
+                image_url: imageUrls[0], // Keep for backward compatibility
+            };
+
+            if (editingProduct) {
+                const { error } = await supabase
+                    .from("products")
+                    .update(productData)
+                    .eq("id", editingProduct.id);
+                if (error) throw error;
+                setStatus({ type: "success", message: "Product updated successfully!" });
+            } else {
+                const { error } = await supabase
+                    .from("products")
+                    .insert([productData]);
+                if (error) throw error;
+                setStatus({ type: "success", message: "Product added successfully!" });
+            }
+
+            resetForm();
+            fetchStats();
+            fetchProducts();
+            setInventoryTab("list");
+        } catch (err: unknown) {
+            let errorMessage = isAppError(err) ? err.message : "Something went wrong.";
+
+            // Handle common schema mismatch errors with helpful instructions
+            if (errorMessage.includes("image_urls") && errorMessage.includes("column")) {
+                errorMessage = "Database update required! Your 'products' table is missing the 'image_urls' column needed for multiple images. Please run the SQL fix in your Supabase dashboard.";
+            }
+
+            setStatus({ type: "error", message: errorMessage });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        // Replace with a more elegant confirmation later, but for now keeping functional parity
+        if (!confirm("Are you sure you want to delete this product?")) return;
+
+        try {
+            const { error } = await supabase.from("products").delete().eq("id", id);
+            if (error) throw error;
+            setStatus({ type: "success", message: "Product deleted successfully" });
+            fetchInitialData();
+        } catch (err: unknown) {
+            setStatus({ type: "error", message: isAppError(err) ? err.message : "Failed to delete product" });
+        }
+    };
+
+    const filteredInventory = products.filter(p =>
+        p.name.toLowerCase().includes(inventorySearch.toLowerCase()) ||
+        p.brand?.toLowerCase().includes(inventorySearch.toLowerCase())
+    );
+
+    return (
+        <div className="min-h-screen bg-[#F8FAFC] flex font-sans selection:bg-primary/10">
+            {/* Sidebar Overlay for Mobile */}
+            <AnimatePresence>
+                {isSidebarOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsSidebarOpen(false)}
+                        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden"
+                    />
+                )}
+            </AnimatePresence>
+
+            {/* Sidebar */}
+            <aside className={`
+                fixed inset-y-0 left-0 w-72 bg-white border-r border-slate-200 flex flex-col z-50 transition-transform duration-300 transform
+                ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+                lg:translate-x-0 lg:static lg:h-screen lg:z-20
+            `}>
+                <div className="p-8">
+                    <div className="flex items-center justify-between mb-10">
+                        <div className="flex flex-col gap-2">
+                            <div className="relative w-32 h-8">
+                                <Image
+                                    src="/Images/logo.svg"
+                                    alt="Depro Trading Logo"
+                                    fill
+                                    className="object-contain object-left"
+                                />
+                            </div>
+                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] ml-0.5">Admin Dashboard</span>
+                        </div>
+                        <button
+                            onClick={() => setIsSidebarOpen(false)}
+                            className="lg:hidden p-2 text-slate-400 hover:text-slate-900 transition-colors"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+
+                    <nav className="space-y-2">
+                        <button
+                            onClick={() => {
+                                setActiveTab("home");
+                                setIsSidebarOpen(false);
+                            }}
+                            className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl transition-all font-bold text-sm ${activeTab === "home" ? "bg-primary text-white" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                                }`}
+                        >
+                            <LayoutDashboard size={20} />
+                            Overview
+                        </button>
+                        <button
+                            onClick={() => {
+                                setActiveTab("inventory");
+                                setIsSidebarOpen(false);
+                            }}
+                            className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl transition-all font-bold text-sm ${activeTab === "inventory" ? "bg-primary text-white" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                                }`}
+                        >
+                            <Boxes size={20} />
+                            Inventory
+                        </button>
+                    </nav>
+                </div>
+
+                <div className="mt-auto p-8">
+                    <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl transition-all font-bold text-sm text-rose-500 hover:bg-rose-50"
+                    >
+                        <LogOut size={20} />
+                        Log out
+                    </button>
+                </div>
+            </aside>
+
+            {/* Main Content */}
+            <main className="flex-1 min-h-screen pb-20 w-full overflow-x-hidden">
+                {/* Header */}
+                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-100 flex items-center justify-between px-6 md:px-10 py-4 md:py-6">
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => setIsSidebarOpen(true)}
+                            className="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-900 transition-colors"
+                        >
+                            <Menu size={24} />
+                        </button>
+                        <div className="flex items-center gap-2 md:gap-4">
+                            <h2 className="text-base md:text-lg font-black text-slate-900 capitalize tracking-tight">{activeTab}</h2>
+                            <ChevronRight className="text-slate-300 hidden md:block" size={16} />
+                            <span className="text-xs md:text-sm font-bold text-slate-400 hidden md:block">Dashboard Control</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div className="p-4 md:p-10 max-w-6xl mx-auto">
+                    {isLoading ? (
+                        <div className="flex items-center justify-center h-[60vh]">
+                            <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                        </div>
+                    ) : (
+                        <AnimatePresence mode="wait">
+                            {activeTab === "home" ? (
+                                <DashboardOverview key="home" stats={stats} />
+                            ) : (
+                                <motion.div
+                                    key="inventory"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    className="space-y-8"
+                                >
+                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                        <div>
+                                            <h3 className="text-2xl font-black text-slate-900 tracking-tight">
+                                                {inventoryTab === "list" ? "Warehouse Inventory" : editingProduct ? "Modify Product Asset" : "Add New Product"}
+                                            </h3>
+                                            <p className="text-slate-400 text-sm font-bold mt-1">
+                                                {inventoryTab === "list" ? "Manage and monitor your catalog assets." : editingProduct ? `Editing: ${editingProduct.name}` : "Populate your catalog with new arrivals."}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <button
+                                                onClick={() => setIsCategoryModalOpen(true)}
+                                                className="flex items-center gap-3 bg-white border border-slate-200 text-slate-600 px-6 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm active:scale-[0.98]"
+                                            >
+                                                Categories
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    if (inventoryTab === "list") {
+                                                        resetForm();
+                                                        setInventoryTab("add");
+                                                    } else {
+                                                        setInventoryTab("list");
+                                                    }
+                                                }}
+                                                className="flex items-center gap-3 bg-slate-900 text-white px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl shadow-slate-900/10 active:scale-[0.98]"
+                                            >
+                                                {inventoryTab === "list" ? "New Product" : (
+                                                    <>
+                                                        <span className="hidden md:inline">View </span>
+                                                        Inventory
+                                                    </>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Status Messages */}
+                                    {status && (
+                                        <div className={`p-5 rounded-3xl flex items-center justify-between gap-4 ${status.type === "success" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" : "bg-rose-50 text-rose-700 border border-rose-100"}`}>
+                                            <p className="font-bold text-xs tracking-wide">{status.message}</p>
+                                            <button onClick={() => setStatus(null)} className="opacity-40 hover:opacity-100 transition-opacity">Dismiss</button>
+                                        </div>
+                                    )}
+
+                                    {inventoryTab === "list" ? (
+                                        <InventoryView
+                                            inventorySearch={inventorySearch}
+                                            setInventorySearch={setInventorySearch}
+                                            products={products}
+                                            filteredInventory={filteredInventory}
+                                            handleEdit={handleEdit}
+                                            handleDelete={handleDelete}
+                                        />
+                                    ) : (
+                                        <ProductForm
+                                            formData={formData}
+                                            setFormData={setFormData}
+                                            formErrors={formErrors}
+                                            setFormErrors={setFormErrors}
+                                            imagePreviews={imagePreviews}
+                                            isSubmitting={isSubmitting}
+                                            editingProduct={editingProduct}
+                                            categories={categories}
+                                            handleSubmit={handleSubmit}
+                                            handleImageChange={handleImageChange}
+                                            removeImage={removeImage}
+                                            resetForm={resetForm}
+                                            setInventoryTab={setInventoryTab}
+                                        />
+                                    )}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    )}
+
+                    <CategoryModal
+                        isOpen={isCategoryModalOpen}
+                        onClose={() => {
+                            setIsCategoryModalOpen(false);
+                            setModalError(null);
+                        }}
+                        categories={categories}
+                        newCategoryName={newCategoryName}
+                        setNewCategoryName={setNewCategoryName}
+                        handleCreateCategory={handleCreateCategory}
+                        handleDeleteCategory={handleDeleteCategory}
+                        isAddingCategory={isAddingCategory}
+                        modalError={modalError}
+                        setModalError={setModalError}
+                        deletingCategoryId={deletingCategoryId}
+                        confirmingDeleteId={confirmingDeleteId}
+                        setConfirmingDeleteId={setConfirmingDeleteId}
+                    />
+                </div>
+            </main>
+        </div>
+    );
+}
