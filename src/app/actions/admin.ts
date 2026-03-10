@@ -6,6 +6,12 @@ import { isAppError } from '@/types/error';
 export async function deleteCategoryAction(categoryId: string) {
     try {
         const supabaseAdmin = getSupabaseAdmin();
+
+        // Security check: verify the user is logged in before allowing bypass via Admin client
+        const { data: { session } } = await supabaseAdmin.auth.getSession();
+        if (!session) {
+            return { success: false, error: "Unauthorized access detected." };
+        }
         
         // Use the admin client to bypass RLS for administrative deletion
         const { data, error } = await supabaseAdmin

@@ -36,7 +36,7 @@ export default function AdminLayout({
 
         checkAuth();
 
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: string, session: any) => {
             if (!session) {
                 setAuthorized(false);
                 router.push("/admin/login");

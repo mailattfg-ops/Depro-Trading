@@ -143,11 +143,11 @@ export default function Hero() {
                         </div>
 
                         {/* Customer Stats */}
-                        <div className="hidden md:flex md:col-span-3 lg:col-span-3 flex-row md:flex-col items-center md:items-start gap-2 lg:gap-4 md:pl-4 lg:pl-0 border-l border-white/10 lg:border-none">
+                        <div className="hidden md:flex md:col-span-3 lg:col-span-3 flex-row md:flex-col items-center md:items-start gap-2 md:pl-4 lg:pl-0 border-l border-white/10 lg:border-none">
                             <div className="flex -space-x-2 lg:-space-x-3 lg:mb-4">
                                 {[1, 2].map((i) => (
                                     <div key={i} className="w-8 h-8 lg:w-10 lg:h-10 rounded-full border-2 border-primary overflow-hidden bg-slate-200 shadow-lg relative">
-                                        <Image src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Customer" fill className="object-cover" />
+                                        <Image src={`/Images/people${i}.webp`} alt="Customer" fill className="object-cover" />
                                     </div>
                                 ))}
                             </div>

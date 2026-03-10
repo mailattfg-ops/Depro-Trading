@@ -29,31 +29,43 @@ import { Category, Product, Stats, FormState, FormErrors } from "@/types";
 import { deleteCategoryAction } from "@/app/actions/admin";
 import { isAppError } from "@/types/error";
 
+import { useAdmin } from "@/hooks/useAdmin";
+import ConfirmationModal from "@/components/ui/ConfirmationModal";
+
 export default function AdminPage() {
     const router = useRouter();
+    const {
+        categories,
+        products,
+        stats,
+        isLoading,
+        isSubmitting,
+        status,
+        setStatus,
+        deleteCategory,
+        deleteProduct,
+        addCategory,
+        saveProduct,
+        refreshData
+    } = useAdmin();
+
     const [activeTab, setActiveTab] = useState<"home" | "inventory">("home");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [inventoryTab, setInventoryTab] = useState<"list" | "add">("list");
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [products, setProducts] = useState<Product[]>([]);
     const [inventorySearch, setInventorySearch] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [newCategoryName, setNewCategoryName] = useState("");
     const [isAddingCategory, setIsAddingCategory] = useState(false);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
-    const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [modalError, setModalError] = useState<string | null>(null);
     const [formErrors, setFormErrors] = useState<FormErrors>({});
     const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(null);
     const [confirmingDeleteId, setConfirmingDeleteId] = useState<string | null>(null);
-    const [stats, setStats] = useState<Stats>({
-        totalProducts: 0,
-        totalClicks: 0,
-        topProduct: "N/A",
-        topProductsList: [],
-        recentProductsList: []
+    const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean; type: 'product' | 'category'; id: string; title: string }>({
+        isOpen: false,
+        type: 'product',
+        id: '',
+        title: ''
     });
 
     // Form State
@@ -69,127 +81,28 @@ export default function AdminPage() {
     const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-    useEffect(() => {
-        // Data fetching is now guaranteed by the (admin) layout protection
-        fetchInitialData();
-    }, []);
-
-    const fetchInitialData = async () => {
-        setIsLoading(true);
-        await Promise.all([fetchCategories(), fetchStats(), fetchProducts()]);
-        setIsLoading(false);
-    };
-
-    const fetchProducts = async () => {
-        try {
-            const { data, error } = await supabase
-                .from("products")
-                .select(`
-                    *,
-                    category:categories(name)
-                `)
-                .order("created_at", { ascending: false });
-
-            if (error) throw error;
-            setProducts(data as Product[] || []);
-        } catch (err) {
-            console.error("Error fetching products:", err);
-        }
-    };
-
-    const fetchStats = async () => {
-        try {
-            const { data: products, error, count } = await supabase
-                .from("products")
-                .select("name, clicks", { count: "exact" });
-
-            if (error) throw error;
-
-            const totalProductsCount = count || 0;
-            const totalClicks = products?.reduce((acc, p) => acc + (p.clicks || 0), 0) || 0;
-            const sortedProducts = products ? [...products].sort((a, b) => (b.clicks || 0) - (a.clicks || 0)) : [];
-            const topProduct = sortedProducts[0]?.name || "N/A";
-            const topProductsList = sortedProducts.slice(0, 5) as Pick<Product, 'name' | 'clicks'>[];
-
-            const { data: recent } = await supabase
-                .from("products")
-                .select("name, clicks, created_at, mrp_price")
-                .order("created_at", { ascending: false })
-                .limit(5);
-
-            setStats({
-                totalProducts: totalProductsCount,
-                totalClicks,
-                topProduct,
-                topProductsList,
-                recentProductsList: (recent || []) as Partial<Product>[]
-            });
-        } catch (err: any) {
-            console.error("Detailed Error fetching stats:", err);
-            setStats({
-                totalProducts: 0,
-                totalClicks: 0,
-                topProduct: "Error loading",
-                topProductsList: [],
-                recentProductsList: []
-            });
-        }
-    };
-
     const handleCreateCategory = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!newCategoryName.trim()) return;
         setIsAddingCategory(true);
-        try {
-            const { error } = await supabase.from("categories").insert([{ name: newCategoryName.trim() }]);
-            if (error) throw error;
+        const result = await addCategory(newCategoryName);
+        if (result.success) {
             setNewCategoryName("");
-            setStatus({ type: "success", message: "Category added successfully" });
-            setIsCategoryModalOpen(false); // Close modal on success
-            fetchCategories();
-        } catch (err: unknown) {
-            setStatus({ type: "error", message: isAppError(err) ? err.message : "Failed to create category" });
-        } finally {
-            setIsAddingCategory(false);
+            setIsCategoryModalOpen(false);
         }
+        setIsAddingCategory(false);
     };
 
     const handleDeleteCategory = async (id: string) => {
         setModalError(null);
         setDeletingCategoryId(id);
-        try {
-            // Using a Server Action bypasses client-side RLS restrictions securely
-            const result = await deleteCategoryAction(id);
-
-            if (!result.success) {
-                throw new Error(result.error);
-            }
-
-            setStatus({ type: "success", message: "Category removed" });
+        const result = await deleteCategory(id);
+        if (!result.success) {
+            setModalError(result.error || "Failed to delete");
+        } else {
             setConfirmingDeleteId(null);
-            fetchCategories();
-        } catch (err: unknown) {
-            setModalError(isAppError(err) ? err.message : "Failed to delete category");
-        } finally {
-            setDeletingCategoryId(null);
         }
-    };
-
-    const fetchCategories = async () => {
-        try {
-            const { data, error } = await supabase
-                .from("categories")
-                .select("*")
-                .order("name", { ascending: true });
-
-            if (error) throw error;
-            setCategories((data as Category[]) || []);
-            if (data && data.length > 0) {
-                setFormData(prev => ({ ...prev, category_id: data[0].id }));
-            }
-        } catch (err) {
-            console.error("Error fetching categories:", err);
-        }
+        setDeletingCategoryId(null);
     };
 
     const handleLogout = async () => {
@@ -297,77 +210,39 @@ export default function AdminPage() {
             return;
         }
 
-        setIsSubmitting(true);
-        setStatus(null);
+        const productData = {
+            name: formData.name,
+            brand: formData.brand,
+            mrp_price: parseFloat(formData.mrp_price) || 0,
+            discount_price: parseFloat(formData.discount_price) || 0,
+            size: formData.size,
+            description: formData.description,
+            category_id: formData.category_id,
+        };
 
-        try {
-            let imageUrls = editingProduct?.image_urls || (editingProduct?.image_url ? [editingProduct.image_url] : []);
-
-            if (imageFiles.length > 0) {
-                const uploadedUrls = await Promise.all(imageFiles.map(file => uploadToCloudinary(file)));
-                // If editing, we might want to append or replace. For simplicity, let's replace for now if new files are added.
-                imageUrls = uploadedUrls;
-            } else if (!editingProduct || imageUrls.length === 0) {
-                throw new Error("Please select at least one image.");
-            }
-
-            const productData = {
-                name: formData.name,
-                brand: formData.brand,
-                mrp_price: parseFloat(formData.mrp_price) || 0,
-                discount_price: parseFloat(formData.discount_price) || 0,
-                size: formData.size,
-                description: formData.description,
-                category_id: formData.category_id,
-                image_urls: imageUrls,
-                image_url: imageUrls[0], // Keep for backward compatibility
-            };
-
-            if (editingProduct) {
-                const { error } = await supabase
-                    .from("products")
-                    .update(productData)
-                    .eq("id", editingProduct.id);
-                if (error) throw error;
-                setStatus({ type: "success", message: "Product updated successfully!" });
-            } else {
-                const { error } = await supabase
-                    .from("products")
-                    .insert([productData]);
-                if (error) throw error;
-                setStatus({ type: "success", message: "Product added successfully!" });
-            }
-
+        const result = await saveProduct(productData, imageFiles, editingProduct);
+        if (result.success) {
             resetForm();
-            fetchStats();
-            fetchProducts();
             setInventoryTab("list");
-        } catch (err: unknown) {
-            let errorMessage = isAppError(err) ? err.message : "Something went wrong.";
-
-            // Handle common schema mismatch errors with helpful instructions
-            if (errorMessage.includes("image_urls") && errorMessage.includes("column")) {
-                errorMessage = "Database update required! Your 'products' table is missing the 'image_urls' column needed for multiple images. Please run the SQL fix in your Supabase dashboard.";
-            }
-
-            setStatus({ type: "error", message: errorMessage });
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
-    const handleDelete = async (id: string) => {
-        // Replace with a more elegant confirmation later, but for now keeping functional parity
-        if (!confirm("Are you sure you want to delete this product?")) return;
+    const handleDelete = (id: string) => {
+        const product = products.find(p => p.id === id);
+        setDeleteModal({
+            isOpen: true,
+            type: 'product',
+            id,
+            title: product?.name || 'this product'
+        });
+    };
 
-        try {
-            const { error } = await supabase.from("products").delete().eq("id", id);
-            if (error) throw error;
-            setStatus({ type: "success", message: "Product deleted successfully" });
-            fetchInitialData();
-        } catch (err: unknown) {
-            setStatus({ type: "error", message: isAppError(err) ? err.message : "Failed to delete product" });
+    const confirmDelete = async () => {
+        const { type, id } = deleteModal;
+        if (type === 'product') {
+            await deleteProduct(id);
         }
+        setDeleteModal(prev => ({ ...prev, isOpen: false }));
     };
 
     const filteredInventory = products.filter(p =>
@@ -583,6 +458,15 @@ export default function AdminPage() {
                         deletingCategoryId={deletingCategoryId}
                         confirmingDeleteId={confirmingDeleteId}
                         setConfirmingDeleteId={setConfirmingDeleteId}
+                    />
+
+                    <ConfirmationModal
+                        isOpen={deleteModal.isOpen}
+                        onClose={() => setDeleteModal(prev => ({ ...prev, isOpen: false }))}
+                        onConfirm={confirmDelete}
+                        title={`Delete ${deleteModal.type === 'product' ? 'Product' : 'Category'}`}
+                        message={`Are you sure you want to permanently remove "${deleteModal.title}" from the catalog? This action cannot be undone.`}
+                        confirmText="Delete Asset"
                     />
                 </div>
             </main>

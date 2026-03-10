@@ -116,16 +116,16 @@ export default function CategoryModal({
                                                     <div className="flex items-center gap-1.5 md:gap-2">
                                                         <button
                                                             onClick={() => setConfirmingDeleteId(null)}
-                                                            className="px-2 md:px-3 py-1.5 text-[8px] md:text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-all"
+                                                            className="px-2 md:px-3 py-1.5 text-[8px] md:text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-all font-sans"
                                                         >
                                                             Cancel
                                                         </button>
                                                         <button
                                                             onClick={() => handleDeleteCategory(cat.id)}
                                                             disabled={deletingCategoryId === cat.id}
-                                                            className="px-3 md:px-4 py-1.5 bg-rose-500 text-white rounded-lg md:rounded-xl text-[8px] md:text-[9px] font-black uppercase tracking-widest hover:bg-rose-600 transition-all flex items-center gap-2"
+                                                            className="px-3 md:px-4 py-1.5 bg-rose-500 text-white rounded-lg md:rounded-xl text-[8px] md:text-[9px] font-black uppercase tracking-widest hover:bg-rose-600 transition-all flex items-center gap-2 font-sans"
                                                         >
-                                                            {deletingCategoryId === cat.id ? <Loader2 size={10} className="animate-spin" /> : "Confirm"}
+                                                            {deletingCategoryId === cat.id ? <Loader2 size={10} className="animate-spin" /> : "Confirm Delete"}
                                                         </button>
                                                     </div>
                                                 ) : (

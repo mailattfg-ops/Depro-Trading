@@ -366,7 +366,7 @@ function ProductCard({ product, index, onInquire }: { product: Product, index: n
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: (index % 8) * 0.05 }}
-            className="bg-brand-beige rounded-[24px] md:rounded-5xl overflow-hidden shadow-soft border border-slate-100/60 group hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.12)] hover:-translate-y-2 transition-all duration-700 flex flex-col h-full relative"
+            className="bg-white rounded-[24px] md:rounded-5xl overflow-hidden shadow-sm border border-slate-100 group hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.12)] hover:border-primary/20 hover:-translate-y-2 transition-all duration-700 flex flex-col h-full relative"
         >
             {/* Image Slider Section - Flush Design */}
             <div className="aspect-[16/10] md:aspect-[4/3] bg-slate-50 relative overflow-hidden shrink-0">
@@ -383,7 +383,7 @@ function ProductCard({ product, index, onInquire }: { product: Product, index: n
                             src={images[currentImg]}
                             alt={product.name}
                             fill
-                            className="object-cover"
+                            className="object-cover group-hover:scale-105 transition-transform duration-700"
                         />
                     </motion.div>
                 </AnimatePresence>
@@ -393,13 +393,13 @@ function ProductCard({ product, index, onInquire }: { product: Product, index: n
                     <div className="absolute inset-x-0 bottom-6 flex items-center justify-between px-6 opacity-0 group-hover:opacity-100 transition-opacity z-20">
                         <button
                             onClick={prevImg}
-                            className="w-10 h-10 bg-black/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-primary hover:border-primary transition-all shadow-lg active:scale-90"
+                            className="w-10 h-10 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center text-slate-900 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-lg active:scale-90"
                         >
                             <ChevronLeft size={20} />
                         </button>
                         <button
                             onClick={nextImg}
-                            className="w-10 h-10 bg-black/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-primary hover:border-primary transition-all shadow-lg active:scale-90"
+                            className="w-10 h-10 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center text-slate-900 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-lg active:scale-90"
                         >
                             <ChevronLeft size={20} className="rotate-180" />
                         </button>
@@ -456,7 +456,7 @@ function ProductCard({ product, index, onInquire }: { product: Product, index: n
                     {product.description || "Premium architectural asset."}
                 </p>
 
-                <div className="flex items-center justify-between p-1 md:p-3 mt-auto bg-slate-50/50 rounded-xl md:rounded-2xl border border-slate-100 group-hover:bg-white group-hover:border-primary/20 transition-all duration-500">
+                <div className="flex items-center justify-between p-1 md:p-3 mt-auto bg-slate-50/80 rounded-xl md:rounded-2xl border border-slate-100 group-hover:bg-white group-hover:border-primary/20 transition-all duration-500">
                     <div className="flex flex-col">
                         {product.discount_price > 0 && product.discount_price < product.mrp_price ? (
                             <div className="flex flex-row items-baseline gap-1.5 md:gap-2">

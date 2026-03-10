@@ -22,7 +22,7 @@ export default function Footer() {
                                 />
                             </div>
                         </Link>
-                        <p className="text-slate-600 text-sm leading-relaxed max-w-xs">
+                        <p className="hidden lg:block text-slate-600 text-sm leading-relaxed max-w-xs">
                             Premium supplier of hardware for interiors, aluminum fabrication, and door fixing solutions. Quality you can trust.
                         </p>
                         <div className="flex items-center gap-4">
@@ -69,34 +69,40 @@ export default function Footer() {
                     </div>
 
                     {/* Contact Details */}
-                    <div className="col-span-2 lg:col-span-1 flex flex-col gap-6">
+                    <div className="col-span-2 lg:col-span-1 flex flex-col gap-6 mt-4 lg:mt-0">
                         <h4 className="font-bold text-slate-900">Contact Info</h4>
-                        <div className="flex flex-col gap-4">
+                        <div className="grid grid-cols-2 lg:grid-cols-1 gap-6 lg:gap-4">
+                            {/* Address - Left side in mobile/md */}
                             <div className="flex items-start gap-3">
                                 <MapPin className="text-primary shrink-0" size={18} />
-                                <span className="text-sm text-slate-600 leading-snug">
+                                <span className="text-sm text-slate-600 leading-snug max-w-[180px] lg:max-w-none">
                                     {contactInfo.address}
                                 </span>
                             </div>
-                            <div className="flex items-center gap-3">
-                                <Phone className="text-primary shrink-0" size={18} />
-                                <span className="text-sm text-slate-600">{contactInfo.phone}</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <Mail className="text-primary shrink-0" size={18} />
-                                <span className="text-sm text-slate-600">{contactInfo.email}</span>
+
+                            {/* Phone & Email - Right side in mobile/md */}
+                            <div className="flex flex-col gap-4">
+                                <div className="flex items-center gap-3">
+                                    <Phone className="text-primary shrink-0" size={18} />
+                                    <span className="text-sm text-slate-600">{contactInfo.phone}</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <Mail className="text-primary shrink-0" size={18} />
+                                    <span className="text-sm text-slate-600">{contactInfo.email}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="mt-4 md:mt-8 lg:mt-16 pt-2 md:pt-4 lg:pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-xs text-slate-500 font-medium text-center md:text-left">
+                <div className="mt-4 md:mt-8 lg:mt-16 pt-2 md:pt-4 lg:pt-8 border-t border-slate-200 grid grid-cols-1 lg:grid-cols-3 items-center gap-4">
+                    <p className="text-xs text-slate-500 font-medium text-center lg:text-left">
                         © {new Date().getFullYear()} Depro Trading. All rights reserved.
                     </p>
-                    <p className="text-xs text-slate-400 font-medium">
+                    <p className="text-xs text-slate-400 font-medium text-center order-first lg:order-0">
                         Designed & Developed by <Link href="https://thinkforgeglobal.com/" target="_blank" className="text-primary hover:underline font-bold transition-all">Think Forge Global</Link>
                     </p>
+                    <div className="hidden lg:block" /> {/* Spacer to keep center alignment */}
                 </div>
             </div>
         </footer>
