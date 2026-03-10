@@ -72,7 +72,7 @@ Requirement: ${formData.requirement}`;
                             className="bg-white/5 backdrop-blur-xl border border-white/10 p-5 md:p-8 rounded-2xl md:rounded-4xl flex flex-col gap-3 md:gap-4 group hover:bg-white/10 transition-colors"
                         >
                             <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/20">
-                                <Phone size={MediaQueryListEvent ? 20 : 24} className="w-5 h-5 md:w-6 md:h-6" />
+                                <Phone size={24} className="w-5 h-5 md:w-6 md:h-6" />
                             </div>
                             <div>
                                 <h4 className="text-white font-black text-[10px] md:text-sm uppercase tracking-widest mb-1 md:mb-2">Direct Line</h4>

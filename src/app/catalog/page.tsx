@@ -253,7 +253,7 @@ export default function CatalogPage() {
                                 animate={{ opacity: 1, scale: 1 }}
                                 className="inline-flex items-center justify-center w-16 h-16 md:w-24 md:h-24 rounded-3xl md:rounded-full bg-white shadow-soft mb-4 md:mb-6 text-slate-300 border border-slate-100"
                             >
-                                <Search size={MediaQueryListEvent ? 24 : 32} className="w-6 h-6 md:w-10 md:h-10" strokeWidth={1.5} />
+                                <Search size={32} className="w-6 h-6 md:w-10 md:h-10" strokeWidth={1.5} />
                             </motion.div>
                             <h3 className="text-xl md:text-3xl font-black text-slate-900 mb-2 md:mb-3 tracking-tight">No results found</h3>
                             <p className="text-slate-500 mb-6 md:mb-8 max-w-xs mx-auto text-[11px] md:text-base leading-relaxed font-medium">
@@ -295,7 +295,7 @@ export default function CatalogPage() {
                             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[80px] -mr-32 -mt-32 transition-transform group-hover:scale-150 duration-700" />
                             <div className="relative z-10 flex flex-col h-full">
                                 <div className="w-14 h-14 md:w-16 md:h-16 bg-primary rounded-2xl flex items-center justify-center mb-8 md:mb-10 shadow-xl shadow-primary/20 transition-transform group-hover:rotate-12">
-                                    <ShoppingBag className="text-white w-6 h-6 md:w-8 md:h-8" size={MediaQueryListEvent ? 24 : 32} />
+                                    <ShoppingBag className="text-white w-6 h-6 md:w-8 md:h-8" size={32} />
                                 </div>
                                 <h3 className="text-3xl md:text-4xl font-black mb-4 md:mb-6 tracking-tight leading-tight">Request <br /> Premium Sourcing</h3>
                                 <p className="text-sm md:text-lg text-slate-400 mb-8 md:mb-10 max-w-md leading-relaxed font-medium">
@@ -323,7 +323,7 @@ export default function CatalogPage() {
 
                             <div className="flex flex-col h-full relative z-10">
                                 <div className="w-14 h-14 md:w-16 md:h-16 bg-white border border-slate-100 rounded-2xl flex items-center justify-center mb-8 md:mb-10 transition-all group-hover:bg-primary/5 group-hover:border-primary/20 group-hover:scale-110">
-                                    <ArrowRight className="text-slate-900 group-hover:text-primary transition-colors w-6 h-6 md:w-8 md:h-8" size={MediaQueryListEvent ? 24 : 32} />
+                                    <ArrowRight className="text-slate-900 group-hover:text-primary transition-colors w-6 h-6 md:w-8 md:h-8" size={32} />
                                 </div>
                                 <h3 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 md:mb-6 tracking-tight leading-tight">Bulk Trade <br /> Support</h3>
                                 <p className="text-sm md:text-lg text-slate-500 mb-8 md:mb-10 max-w-md leading-relaxed font-medium">

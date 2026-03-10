@@ -68,7 +68,7 @@ export default function AboutPage() {
                         <div className="flex-1 flex flex-col gap-6 md:gap-10 w-full">
                             <div className="flex flex-col gap-4 md:gap-6 text-center lg:text-left">
                                 <div className="w-14 h-14 md:w-16 md:h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mx-auto lg:mx-0">
-                                    <missionVisionData.mission.icon size={MediaQueryListEvent ? 28 : 32} className="w-7 h-7 md:w-8 md:h-8" strokeWidth={1.5} />
+                                    <missionVisionData.mission.icon size={32} className="w-7 h-7 md:w-8 md:h-8" strokeWidth={1.5} />
                                 </div>
                                 <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 uppercase tracking-tight">Our <span className="text-primary">Mission</span></h3>
                                 <p className="text-sm md:text-lg text-slate-600 leading-relaxed font-medium">
@@ -82,7 +82,7 @@ export default function AboutPage() {
                         <div className="flex-1 flex flex-col gap-6 md:gap-10 w-full">
                             <div className="flex flex-col gap-4 md:gap-6 text-center lg:text-left">
                                 <div className="w-14 h-14 md:w-16 md:h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white mx-auto lg:mx-0">
-                                    <missionVisionData.vision.icon size={MediaQueryListEvent ? 28 : 32} className="w-7 h-7 md:w-8 md:h-8" strokeWidth={1.5} />
+                                    <missionVisionData.vision.icon size={32} className="w-7 h-7 md:w-8 md:h-8" strokeWidth={1.5} />
                                 </div>
                                 <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 uppercase tracking-tight">Our <span className="text-primary">Vision</span></h3>
                                 <p className="text-sm md:text-lg text-slate-600 leading-relaxed font-medium">
