@@ -267,9 +267,9 @@ export default function AdminPage() {
 
             {/* Sidebar */}
             <aside className={`
-                fixed inset-y-0 left-0 w-72 bg-white border-r border-slate-200 flex flex-col z-50 transition-transform duration-300 transform
+                fixed inset-y-0 left-0 w-72 bg-white border-r border-slate-200 flex flex-col z-50 transition-transform duration-300 transform 
                 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-                lg:translate-x-0 lg:static lg:h-screen lg:z-20
+                lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:z-20 lg:overflow-y-auto no-scrollbar
             `}>
                 <div className="p-8">
                     <div className="flex items-center justify-between mb-10">

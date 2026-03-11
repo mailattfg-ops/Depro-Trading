@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tag, X, Plus, Loader2 } from 'lucide-react';
 import { Category } from '@/types';
@@ -34,6 +34,18 @@ export default function CategoryModal({
     confirmingDeleteId,
     setConfirmingDeleteId
 }: CategoryModalProps) {
+
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isOpen]);
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -49,10 +61,10 @@ export default function CategoryModal({
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="relative w-full max-w-lg bg-white rounded-[32px] md:rounded-[40px] shadow-2xl overflow-hidden border border-slate-100"
+                        className="relative w-full max-w-lg bg-white rounded-[32px] md:rounded-[40px] shadow-2xl overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]"
                     >
-                        <div className="p-6 md:p-10">
-                            <div className="flex items-center justify-between mb-6 md:mb-8">
+                        <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
+                            <div className="flex items-center justify-between mb-6 md:mb-8 shrink-0">
                                 <div className="flex items-center gap-3 md:gap-4">
                                     <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0">
                                         <Tag className="text-primary" size={20} md-size={24} />
@@ -100,8 +112,8 @@ export default function CategoryModal({
                             </form>
 
                             {/* Categories List */}
-                            <div className="space-y-2 md:space-y-3 max-h-[300px] md:max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
-                                <div className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 md:mb-4 sticky top-0 bg-white py-2">
+                            <div className="space-y-2 md:space-y-3 min-h-[150px] pr-2">
+                                <div className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 md:mb-4">
                                     Existing Categories ({categories.length})
                                 </div>
                                 {categories.length > 0 ? (

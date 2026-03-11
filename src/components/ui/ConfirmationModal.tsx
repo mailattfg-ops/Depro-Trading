@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertCircle, X, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -28,6 +28,17 @@ export default function ConfirmationModal({
     variant = 'danger',
     isLoading = false
 }: ConfirmationModalProps) {
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isOpen]);
+
     const variants = {
         danger: {
             icon: <AlertCircle className="text-rose-500" size={24} />,
@@ -66,9 +77,9 @@ export default function ConfirmationModal({
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="relative w-full max-w-md bg-white rounded-[32px] md:rounded-[40px] shadow-2xl overflow-hidden border border-slate-100"
+                        className="relative w-full max-w-md bg-white rounded-[32px] md:rounded-[40px] shadow-2xl overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]"
                     >
-                        <div className="p-8 md:p-10">
+                        <div className="p-8 md:p-10 overflow-y-auto custom-scrollbar">
                             <div className="flex flex-col items-center text-center">
                                 <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center mb-6", style.bg)}>
                                     {style.icon}

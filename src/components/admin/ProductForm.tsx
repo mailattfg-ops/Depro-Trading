@@ -46,11 +46,11 @@ export default function ProductForm({
     setInventoryTab
 }: ProductFormProps) {
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
             {/* Left Column: Media & Meta (4/12) */}
-            <div className="lg:col-span-4 space-y-6 md:space-y-8">
+            <div className="lg:col-span-4 flex flex-col gap-6">
                 {/* Media Section */}
-                <div className="bg-white rounded-[32px] md:rounded-[40px] shadow-sm border border-slate-100 p-6 md:p-8 pt-8 md:pt-10">
+                <div className="bg-white rounded-[32px] md:rounded-[40px] shadow-sm border border-slate-100 p-6 md:p-8 pt-4">
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-3">
                             <Upload className="text-primary" size={20} />
@@ -62,7 +62,7 @@ export default function ProductForm({
                     <div className="space-y-4">
                         <div
                             onClick={() => document.getElementById('image-upload')?.click()}
-                            className="aspect-square rounded-[32px] bg-slate-50 border-2 border-dashed border-slate-100 flex flex-col items-center justify-center cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all group overflow-hidden relative"
+                            className="aspect-4/3 xl:aspect-square rounded-[32px] bg-slate-50 border-2 border-dashed border-slate-100 flex flex-col items-center justify-center cursor-pointer hover:border-primary/40 hover:bg-primary/5 transition-all group overflow-hidden relative"
                         >
                             {imagePreviews.length > 0 ? (
                                 <Image src={imagePreviews[0]} alt="Primary" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -81,7 +81,7 @@ export default function ProductForm({
                         {imagePreviews.length > 0 && (
                             <div className="grid grid-cols-4 gap-3">
                                 {imagePreviews.map((url, idx) => (
-                                    <div key={idx} className="group relative aspect-square rounded-2xl bg-slate-50 overflow-hidden border border-slate-100">
+                                    <div key={idx} className="group relative aspect-4/3 xl:aspect-square rounded-2xl bg-slate-50 overflow-hidden border border-slate-100">
                                         <Image src={url} alt={`Gallery ${idx}`} fill className="object-cover" />
                                         <button
                                             type="button"
@@ -101,7 +101,7 @@ export default function ProductForm({
                                     <button
                                         type="button"
                                         onClick={() => document.getElementById('image-upload')?.click()}
-                                        className="aspect-square rounded-2xl border-2 border-dashed border-slate-100 flex items-center justify-center text-slate-300 hover:border-primary/40 hover:text-primary hover:bg-slate-50 transition-all"
+                                        className="aspect-4/3 xl:aspect-square rounded-2xl border-2 border-dashed border-slate-100 flex items-center justify-center text-slate-300 hover:border-primary/40 hover:text-primary hover:bg-slate-50 transition-all"
                                     >
                                         <Plus size={20} />
                                     </button>
@@ -125,7 +125,7 @@ export default function ProductForm({
                 </div>
 
                 {/* Description Section */}
-                <div className="bg-white rounded-[32px] md:rounded-[40px] shadow-sm border border-slate-100 p-6 md:p-8 pt-8 md:pt-10">
+                <div className="bg-white rounded-[32px] md:rounded-[40px] shadow-sm border border-slate-100 p-6 pt-4 flex-1 flex flex-col">
                     <div className="flex items-center gap-3 mb-6">
                         <FileText className="text-primary" size={20} />
                         <h4 className="text-sm font-black text-slate-900 tracking-tight uppercase">Product Narrative</h4>
@@ -138,7 +138,7 @@ export default function ProductForm({
                             if (formErrors.description) setFormErrors(prev => ({ ...prev, description: undefined }));
                         }}
                         placeholder="Elaborate on material quality, finish, warranty..."
-                        className={`w-full bg-slate-50 border ${formErrors.description ? 'border-rose-200 focus:border-rose-300' : 'border-slate-100'} rounded-[24px] p-6 min-h-[160px] text-sm font-bold text-slate-900 focus:outline-none focus:bg-white transition-all outline-none resize-none shadow-inner leading-relaxed`}
+                        className={`w-full bg-slate-50 border ${formErrors.description ? 'border-rose-200 focus:border-rose-300' : 'border-slate-100'} rounded-[24px] p-6 min-h-[160px] flex-1 text-sm font-bold text-slate-900 focus:outline-none focus:bg-white transition-all outline-none resize-none shadow-inner leading-relaxed`}
                     />
                     <AnimatePresence>
                         {formErrors.description && (
@@ -158,10 +158,10 @@ export default function ProductForm({
             <div className="lg:col-span-8">
                 <div className="bg-white rounded-[32px] md:rounded-[40px] shadow-sm border border-slate-100 overflow-hidden">
                     <form onSubmit={handleSubmit} className="p-6 md:p-10 lg:p-14">
-                        <div className="space-y-8 md:space-y-12">
+                        <div className="space-y-8">
                             {/* Section 1: Identity */}
                             <div>
-                                <div className="flex items-center gap-3 mb-8">
+                                <div className="flex items-center gap-3 mb-4">
                                     <div className="w-2 h-6 bg-primary rounded-full" />
                                     <h4 className="text-lg font-black text-slate-900 tracking-tight">Product Identification</h4>
                                 </div>
@@ -237,7 +237,7 @@ export default function ProductForm({
 
                             {/* Section 2: Commercials */}
                             <div>
-                                <div className="flex items-center gap-3 mb-8">
+                                <div className="flex items-center gap-3 mb-2">
                                     <div className="w-2 h-6 bg-primary rounded-full" />
                                     <h4 className="text-lg font-black text-slate-900 tracking-tight">Pricing & Metrics</h4>
                                 </div>
@@ -308,8 +308,8 @@ export default function ProductForm({
                             </div>
 
                             {/* Action */}
-                            <div className="pt-2 md:pt-8">
-                                <div className="flex flex-col md:flex-row gap-4 pt-2 md:pt-8">
+                            <div className="pt-2 md:pt-4">
+                                <div className="flex flex-col md:flex-row gap-4">
                                     {editingProduct && (
                                         <button
                                             type="button"

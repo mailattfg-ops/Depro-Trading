@@ -2,14 +2,18 @@
 
 import { getSupabaseAdmin } from '@/lib/supabase';
 import { isAppError } from '@/types/error';
+import { cookies } from 'next/headers';
 
 export async function deleteCategoryAction(categoryId: string) {
     try {
         const supabaseAdmin = getSupabaseAdmin();
 
-        // Security check: verify the user is logged in before allowing bypass via Admin client
-        const { data: { session } } = await supabaseAdmin.auth.getSession();
-        if (!session) {
+        // Security check: verify the user is logged in using the custom auth cookie
+        // The admin client does not automatically inherit client cookies in Server Actions
+        const cookieStore = await cookies();
+        const authCookie = cookieStore.get('sb-auth-token')?.value;
+
+        if (!authCookie) {
             return { success: false, error: "Unauthorized access detected." };
         }
         
