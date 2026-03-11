@@ -107,6 +107,7 @@ export default function AdminPage() {
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
+        document.cookie = 'sb-auth-token=; path=/; max-age=0; SameSite=Lax';
         router.push("/admin/login");
         router.refresh();
     };

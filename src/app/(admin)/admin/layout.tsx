@@ -24,9 +24,13 @@ export default function AdminLayout({
                 return;
             }
 
-            const { data: { session } } = await supabase.auth.getSession();
+            // Sync auth check with our custom cookie storage Instead of relying on memory session
+            // The memory session can fall out of sync with the cookie, causing the "black screen" 
+            const cookies = document.cookie.split(';');
+            const authCookie = cookies.find(c => c.trim().startsWith('sb-auth-token='));
 
-            if (!session) {
+            if (!authCookie) {
+                setAuthorized(false);
                 router.push("/admin/login");
             } else {
                 setAuthorized(true);
@@ -35,18 +39,7 @@ export default function AdminLayout({
         };
 
         checkAuth();
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: string, session: any) => {
-            if (!session) {
-                setAuthorized(false);
-                router.push("/admin/login");
-            } else {
-                setAuthorized(true);
-            }
-        });
-
-        return () => subscription.unsubscribe();
-    }, [router]);
+    }, [pathname, router]);
 
     if (isLoading) {
         return (
