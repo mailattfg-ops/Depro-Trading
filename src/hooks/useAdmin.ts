@@ -151,20 +151,20 @@ export function useAdmin() {
         }
     };
 
-    const saveProduct = async (productData: any, imageFiles: File[], editingProduct: Product | null) => {
+    const saveProduct = async (productData: any, imageFiles: File[], editingProduct: Product | null, existingImageUrls: string[] = []) => {
         setIsSubmitting(true);
         try {
-            let imageUrls = editingProduct?.image_urls || (editingProduct?.image_url ? [editingProduct.image_url] : []);
+            let finalImageUrls = [...existingImageUrls];
 
             if (imageFiles.length > 0) {
                 const uploadedUrls = await Promise.all(imageFiles.map(file => uploadToCloudinary(file)));
-                imageUrls = uploadedUrls;
+                finalImageUrls = [...finalImageUrls, ...uploadedUrls];
             }
 
             const dataToSave = {
                 ...productData,
-                image_urls: imageUrls,
-                image_url: imageUrls[0],
+                image_urls: finalImageUrls,
+                image_url: finalImageUrls[0] || "",
             };
 
             if (editingProduct) {

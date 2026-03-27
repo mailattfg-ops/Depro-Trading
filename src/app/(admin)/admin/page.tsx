@@ -115,18 +115,37 @@ export default function AdminPage() {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
         if (files.length > 0) {
-            const newFiles = [...imageFiles, ...files].slice(0, 3); // Limit to 3 images
-            setImageFiles(newFiles);
+            // Keep existing URLs
+            const existingUrls = imagePreviews.filter(p => p.startsWith('http'));
+            
+            // How many more images can we add? (Total limit 3)
+            const remainingSlots = 3 - existingUrls.length;
+            if (remainingSlots <= 0) return;
 
-            const newPreviews: string[] = [];
+            // Only take what fits
+            const selectedFiles = files.slice(0, remainingSlots);
+            
+            // For imageFiles, we only store the new files
+            // We append to existing new files, but keep it within remainingSlots
+            const combinedFiles = [...imageFiles, ...selectedFiles].slice(0, remainingSlots);
+            setImageFiles(combinedFiles);
+
+            const filePreviews: string[] = [];
             let loaded = 0;
-            newFiles.forEach((file) => {
+            
+            // If we have no new files, just update previews with existing URLs
+            if (combinedFiles.length === 0) {
+                setImagePreviews(existingUrls);
+                return;
+            }
+
+            combinedFiles.forEach((file) => {
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    newPreviews.push(reader.result as string);
+                    filePreviews.push(reader.result as string);
                     loaded++;
-                    if (loaded === newFiles.length) {
-                        setImagePreviews(newPreviews);
+                    if (loaded === combinedFiles.length) {
+                        setImagePreviews([...existingUrls, ...filePreviews]);
                     }
                 };
                 reader.readAsDataURL(file);
@@ -135,10 +154,23 @@ export default function AdminPage() {
     };
 
     const removeImage = (index: number) => {
-        const newFiles = imageFiles.filter((_, i) => i !== index);
+        const imageToRemove = imagePreviews[index];
+        const isUrl = imageToRemove.startsWith('http');
+        
         const newPreviews = imagePreviews.filter((_, i) => i !== index);
-        setImageFiles(newFiles);
         setImagePreviews(newPreviews);
+
+        if (!isUrl) {
+            // It's a file preview. We need to find its index relative to other file previews.
+            // File previews always come AFTER existing URLs in the imagePreviews array.
+            const existingUrlsCount = imagePreviews.filter(p => p.startsWith('http')).length;
+            const fileIndex = index - existingUrlsCount;
+            
+            if (fileIndex >= 0) {
+                const newFiles = imageFiles.filter((_, i) => i !== fileIndex);
+                setImageFiles(newFiles);
+            }
+        }
     };
 
     const handleEdit = (product: Product) => {
@@ -221,7 +253,8 @@ export default function AdminPage() {
             category_id: formData.category_id,
         };
 
-        const result = await saveProduct(productData, imageFiles, editingProduct);
+        const existingImageUrls = imagePreviews.filter(url => url.startsWith('http'));
+        const result = await saveProduct(productData, imageFiles, editingProduct, existingImageUrls);
         if (result.success) {
             resetForm();
             setInventoryTab("list");
