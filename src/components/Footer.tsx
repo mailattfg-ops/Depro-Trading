@@ -99,8 +99,8 @@ export default function Footer() {
                     <p className="text-xs text-slate-500 font-medium text-center lg:text-left">
                         © {new Date().getFullYear()} Depro Trading. All rights reserved.
                     </p>
-                    <p className="text-xs text-slate-400 font-medium text-center order-first lg:order-0">
-                        Designed & Developed by <Link href="https://thinkforgeglobal.com/" target="_blank" className="text-primary hover:underline font-bold transition-all">Think Forge Global</Link>
+                    <p className="text-xs text-slate-400 font-normal text-center order-first lg:order-0">
+                        Designed & Developed by <Link href="https://www.thinkforgeglobal.com/" target="_blank" className="text-slate-600 hover:text-primary font-bold transition-all">Think Forge Global</Link>
                     </p>
                     <div className="hidden lg:block" /> {/* Spacer to keep center alignment */}
                 </div>
